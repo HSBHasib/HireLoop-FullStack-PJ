@@ -3,7 +3,7 @@ import React from 'react'
 const Banner = () => {
   return (
     <div>
-      This is Banner
+      <h1 className='text-3xl'>This is Banner section</h1>
     </div>
   )
 }
