@@ -1,16 +1,18 @@
 import React from "react";
 import Link from "next/link";
-import { FaFacebookF, FaLinkedinIn } from "react-icons/fa6";
-import { RiTwitterXLine } from "react-icons/ri";
+import { FaGithub, FaLinkedinIn } from "react-icons/fa6";
+import { MdPerson4 } from "react-icons/md";
 import Image from "next/image";
 
 const Footer = () => {
+  // All Socail Icons and Links
   const socialLinks = [
-    { id: 1, icon: FaFacebookF, href: "#", isCustomBg: false },
-    { id: 2, icon: FaLinkedinIn, href: "#", isCustomBg: true },
-    { id: 3, icon: RiTwitterXLine, href: "#", isCustomBg: false },
+    { id: 1, icon: MdPerson4, href: "https://hasib-portfolio-silk.vercel.app/", isCustomBg: false },
+    { id: 2, icon: FaLinkedinIn, href: "https://www.linkedin.com/in/hasibur-rahman19/", isCustomBg: true },
+    { id: 3, icon: FaGithub, href: "https://github.com/HSBHasib", isCustomBg: false },
   ];
 
+  // All Footer Links
   const footerSections = [
     {
       title: "Product",
@@ -41,7 +43,9 @@ const Footer = () => {
   return (
     <>
       <footer className="w-full   pt-16 px-6">
+        {/* Footer Top Part */}
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12">
+          {/* Footer Company Logo and Info Msg about company */}
           <div className="flex flex-col gap-3 max-w-sm">
             <Link href="/">
               <Image
@@ -59,6 +63,7 @@ const Footer = () => {
             </p>
           </div>
 
+          {/* Footer All Links */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 md:gap-20">
             {footerSections.map((section) => (
               <div key={section.title} className="flex flex-col gap-4">
@@ -82,13 +87,16 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* (Footer Bottom Part) - Socail Links and Copy Right and other simple dets.... */}
         <div className="max-w-7xl mx-auto mt-14 border-t py-4 border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium text-gray-600">
+          {/* Socail Links */}
           <div className="flex items-center gap-3 pt-4">
             {socialLinks.map((social) => {
               const IconComponent = social.icon;
               return (
                 <Link
                   key={social.id}
+                  target="_blank"
                   href={social.href}
                   className={`w-9 h-9 flex items-center justify-center rounded-xl transition-all ${
                     social.isCustomBg
@@ -101,8 +109,10 @@ const Footer = () => {
               );
             })}
           </div>
+
+          {/* Copy Right and other simple dets.... */}
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap justify-center items-center gap-2">
               <div>
                 <p className="text-[#B9B8C2]/50 mr-3">
                   Copyright 2026 —HireLoop
@@ -126,3 +136,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
