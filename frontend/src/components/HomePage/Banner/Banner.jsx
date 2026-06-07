@@ -1,11 +1,16 @@
-import React from 'react'
+import React from "react";
+import GlobeSection from "./GlobeSection";
+
 
 const Banner = () => {
+  
   return (
-    <div>
-      Hi this is banner
-    </div>
-  )
-}
+    <>
+      
+      {/* Globe Section */}
+      <GlobeSection />
+    </>
+  );
+};
 
-export default Banner
+export default Banner;
