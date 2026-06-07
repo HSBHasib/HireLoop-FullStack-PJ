@@ -11,7 +11,7 @@ const GlobeSection = () => {
   ];
 
   return (
-    <div className="relative w-full mt-20 text-white pt-56 pb-24 sm:pt-35 px-4 overflow-hidden flex flex-col items-center justify-end min-h-[700px]">
+    <div className="relative w-full mt-16 text-white pt-56 pb-24 sm:pt-35 px-4 overflow-hidden flex flex-col items-center justify-end min-h-[700px]">
       {/* Globe Image Style */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[700px] md:w-[1500px] md:h-[850px] pointer-events-none z-0">
         <Image
@@ -24,8 +24,8 @@ const GlobeSection = () => {
       </div>
 
       {/* Text Content in globe */}
-      <div className="relative z-10 text-center max-w-2xl mb-16 px-4 md:mt-20">
-        <h2 className="text-xl md:text-3xl tracking-tight leading-7 md:leading-10 text-[#B9B9C8]">
+      <div className="relative z-10 text-center max-w-2xl mb-16 md:mb-20 px-4 md:mt-20">
+        <h2 className="max-[400px]:text-xl text-2xl md:text-3xl tracking-tight leading-7 md:leading-10 text-[#B9B9C8]">
           Assisting over{" "}
           <span className="font-medium text-white">15,000 job seekers</span>{" "}
           <br />

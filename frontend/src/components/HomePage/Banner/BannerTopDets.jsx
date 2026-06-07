@@ -10,7 +10,7 @@ const BannerTopDets = () => {
 
   return (
     <div className="w-full h-auto flex flex-col items-center justify-start px-4">
-      <div className="text-center max-w-4xl flex flex-col items-center mt-16">
+      <div className="text-center max-w-4xl flex flex-col items-center mt-22">
         
         {/* Tag */}
         <div className="border border-white/5 bg-[#111115]/40 backdrop-blur-md px-5 py-1.5 rounded-full text-xs font-semibold tracking-wider space-x-2 shadow-inner text-[#868687] mb-3">
