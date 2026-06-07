@@ -1,13 +1,15 @@
 import React from 'react'
 import GlobeSection from './GlobeSection';
+import BannerTopDets from './BannerTopDets';
 
 const Banner = () => {
-  
   return (
-    <div>
+    <div className='w-full bg-[#0A0A0C] flex flex-col items-center justify-start'>
+      <BannerTopDets />
       <GlobeSection />
     </div>
   )
 }
 
 export default Banner;
+
