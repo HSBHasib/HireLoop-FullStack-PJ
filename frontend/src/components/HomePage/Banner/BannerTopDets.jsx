@@ -36,7 +36,7 @@ const BannerTopDets = () => {
             <input
               type="text"
               placeholder="Job title, skill or company"
-              className="w-full bg-transparent border-none outline-none text-sm placeholder-gray-600 text-white"
+              className="w-full bg-transparent border-none outline-none text-sm placeholder-text-[#CCCCCD] text-white"
             />
           </div>
 
@@ -45,11 +45,11 @@ const BannerTopDets = () => {
             <input
               type="text"
               placeholder="Location or Remote"
-              className="w-full bg-transparent border-none outline-none text-sm placeholder-gray-600 text-white"
+              className="w-full bg-transparent border-none outline-none text-sm placeholder-text-[#CCCCCD] text-white"
             />
           </div>
 
-          <button className="w-full sm:w-auto bg-[#5850EC] hover:bg-[#4d45d0] text-white p-3.5 px-5 rounded-xl transition-all flex items-center justify-center active:scale-95 cursor-pointer">
+          <button className="w-full sm:w-auto bg-[#5850EC] hover:bg-[#4d45d0] text-white p-3.5 px-5 rounded-xl transition-all flex items-center justify-center active:scale-95 duration-300 cursor-pointer">
             <FiSearch className="text-lg" />
           </button>
         </div>
@@ -60,7 +60,7 @@ const BannerTopDets = () => {
           {bannerTopData.map((item) => (
             <button
               key={item.id}
-              className="px-4 py-1.5 rounded-full bg-white/5 border border-white/5 text-gray-300 hover:bg-white/10 transition-colors"
+              className="px-4 py-1.5 rounded-full bg-white/5 border border-white/5 text-[#CCCCCD] hover:bg-white/10 transition-colors"
             >
               {item.label}
             </button>
