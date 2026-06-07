@@ -2,7 +2,7 @@ import Banner from "@/components/HomePage/Banner/Banner"
 
 const Home = () => {
   return(
-    <div>
+    <div className="bg-[#010103]">
       <Banner />
     </div>
   )

@@ -1,9 +1,11 @@
 import React from 'react'
+import GlobeSection from './GlobeSection'
 
 const Banner = () => {
   return (
     <div>
-      Hi this is banner
+      {/* Globe Section */}
+      <GlobeSection />
     </div>
   )
 }

@@ -24,7 +24,7 @@ const AppNavbar = () => {
     },
   ];
   return (
-    <div className="px-4 py-4">
+    <div className="px-4 py-4 bg-[#010103]">
       <nav className="max-w-7xl mx-auto h-[62px] bg-[#1E1E20]/30 border border-white/5 rounded-2xl px-6 flex items-center justify-between shadow-2xl shadow-black/40">
         {/* Left Side: Logo Image Section */}
         <div className="flex items-center">

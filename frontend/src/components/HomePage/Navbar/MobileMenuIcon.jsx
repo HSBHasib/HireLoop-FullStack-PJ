@@ -1,4 +1,4 @@
-import { Bars, Xmark } from "@gravity-ui/icons";
+import { HiMiniBars3, HiXMark } from "react-icons/hi2";
 
 const MobileMenuIcon = ({isMenuOpen, setIsMenuOpen}) => {
   return (
@@ -9,9 +9,9 @@ const MobileMenuIcon = ({isMenuOpen, setIsMenuOpen}) => {
         aria-label="Toggle menu"
       >
         {isMenuOpen ? (
-          <Xmark className="w-5 h-5" />
+          <HiMiniBars3 className="w-5 h-5" />
         ) : (
-          <Bars className="w-5 h-5" />
+          <HiXMark className="w-5 h-5" />
         )}
       </button>
     </>
