@@ -66,13 +66,13 @@ const AppNavbar = () => {
 
             <Link
               className="text-sm font-semibold text-[#6366F1] hover:text-[#818CF8] hover:underline transition-colors "
-              href="signin"
+              href="/auth/signin"
             >
               Sign In
             </Link>
 
             <Button className="bg-[#5850EC] hover:bg-[#685FFF] text-white font-semibold text-sm px-6 h-10 rounded-xl transition-all duration-200 active:scale-95 shadow-md">
-              <Link href="signup">Get Started</Link>
+              <Link href="/auth/signup">Get Started</Link>
             </Button>
           </div>
         </div>
