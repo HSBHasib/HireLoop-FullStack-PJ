@@ -28,7 +28,6 @@ const SignUpPage = () => {
 
   const onSubmit = async (data) => {
     // Standard text schema payload target for BetterAuth pipeline
-    console.log("SignUp Form Data Submitted successfully:", data);
     const { name, email, password, image } = data;
 
     const { data: dets, error } = await authClient.signUp.email({

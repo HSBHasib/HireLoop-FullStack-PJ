@@ -6,6 +6,9 @@ import { Form, Button, TextField, Label } from "@heroui/react";
 import Link from "next/link";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
+import { redirect } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 export default function SignInPage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -20,8 +23,32 @@ export default function SignInPage() {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log("SignIn Form Data Submitted successfully:", data);
+  const onSubmit = async (data) => {
+    const { email, password } = data;
+
+    const { data: dets, error } = await authClient.signIn.email({
+      email,
+      password,
+      rememberMe: true,
+    });
+
+    if (error) {
+      // Error tracking handler sequence setup feedback mechanisms
+      toast.error(error.message, {
+        duration: 2000,
+      });
+      return;
+    }
+
+    if (dets) {
+      toast.success(
+        `Sign In Successful.`,
+        {
+          duration: 1500,
+        },
+      );
+      redirect("/");
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -153,4 +180,3 @@ export default function SignInPage() {
     </div>
   );
 }
-
