@@ -25,7 +25,7 @@ const AppNavbar = () => {
   ];
   return (
     <div className="px-4 py-4">
-      <nav className="max-w-7xl mx-auto h-[62px] bg-[#1E1E20] border border-white/5 rounded-2xl px-6 flex items-center justify-between shadow-2xl shadow-black/40">
+      <nav className="max-w-7xl mx-auto h-[62px] bg-[#1E1E20]/30 border border-white/5 rounded-2xl px-6 flex items-center justify-between shadow-2xl shadow-black/40">
         {/* Left Side: Logo Image Section */}
         <div className="flex items-center">
           <Link
@@ -47,11 +47,11 @@ const AppNavbar = () => {
         <div className="hidden md:flex gap-6">
           {/* Desktop Navigation Links */}
           <ul className="hidden md:flex items-center gap-6">
-            {menuItems.map((item) => (
-              <li key={item}>
+            {menuItems.map((item, idx) => (
+              <li key={idx}>
                 <Link
                   href={item.href}
-                  className="text-sm text-white/90 font-medium"
+                  className="text-sm text-white/85 font-medium hover:text-white"
                 >
                   {item.link}
                 </Link>
@@ -62,7 +62,7 @@ const AppNavbar = () => {
           {/*Actions (Sign In + Divider + Get Started) */}
           <div className="hidden md:flex items-center gap-5">
             {/* Divider */}
-            <span className="hidden md:inline text-white/10 text-sm">|</span>
+            <span className="hidden md:inline text-white/20 text-xl">|</span>
 
             <Link
               className="text-sm font-semibold text-[#6366F1] hover:text-[#818CF8] hover:underline transition-colors "

@@ -5,11 +5,11 @@ const MobileResponsiveDropDown = ({menuItems, isMenuOpen, setIsMenuOpen}) => {
   return (
     <>
       {isMenuOpen && (
-        <div className="absolute top-20 left-4 right-4 bg-[#1E1E20]/95 backdrop-blur-xl border border-white/5 rounded-3xl p-6 flex flex-col gap-4 md:hidden shadow-xl z-40">
-          {menuItems.map((item) => (
+        <div className={`w-[50%] absolute top-23 right-4 bg-[#1E1E20]/70 backdrop-blur-xl border border-white/5 rounded-xl p-6 flex flex-col gap-4 md:hidden shadow-xl z-40`}>
+          {menuItems.map((item, idx) => (
             <Link
-              key={item}
-              className="w-full text-white hover:text-[#EA580C] font-medium text-base py-1.5 transition-colors border-b border-white/5"
+              key={idx}
+              className="w-full text-white/85 hover:text-white font-medium text-base py-1.5 transition-colors border-b border-white/5"
               href={item.href}
               onClick={() => setIsMenuOpen(false)}
             >
