@@ -42,7 +42,11 @@ const Footer = () => {
 
   return (
     <>
+<<<<<<< HEAD
       <footer className="w-full bg-[#010103] border-t pt-14 px-6">
+=======
+      <footer className="w-full pt-14 px-6 border-t border-b-neutral-600 bg-[#010103]">
+>>>>>>> 06032b76af6e02f78f4616de1be9ba2422953a44
         {/* Footer Top Part */}
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12">
           {/* Footer Company Logo and Info Msg about company */}
