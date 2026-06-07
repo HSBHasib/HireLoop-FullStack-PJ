@@ -24,8 +24,8 @@ const AppNavbar = () => {
     },
   ];
   return (
-    <div className=" px-4 py-4 bg-[#010103]">
-      <nav className="max-w-7xl mx-auto h-[62px] bg-[#1E1E20]/30 border border-white/5 rounded-2xl px-6 flex items-center justify-between shadow-2xl shadow-black/40">
+    <div className="sticky top-4 z-70 w-full px-4 ">
+      <nav className="max-w-7xl mx-auto  flex items-center justify-between">
         {/* Left Side: Logo Image Section */}
         <div className="flex items-center">
           <Link
@@ -38,13 +38,13 @@ const AppNavbar = () => {
               width={500}
               height={500}
               priority
-              className="object-contain h-auto w-auto"
+              className="object-contain h-auto w-[100px]"
             />
           </Link>
         </div>
 
         {/* Right Side: Desktop All Links */}
-        <div className="hidden md:flex gap-6">
+        <div className="hidden md:flex gap-6 h-[62px] bg-[#1E1E20]/60 border border-white/5 rounded-2xl px-6">
           {/* Desktop Navigation Links */}
           <ul className="hidden md:flex items-center gap-6">
             {menuItems.map((item, idx) => (

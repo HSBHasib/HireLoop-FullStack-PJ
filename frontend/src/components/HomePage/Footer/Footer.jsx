@@ -57,7 +57,7 @@ const Footer = () => {
                 className="object-contain w-[120px] h-auto" 
               />
             </Link>
-            <p className="text-sm leading-relaxed text-[#B9B8C2] sm:w-[80%]">
+            <p className="text-sm leading-relaxed text-[#8A8A8B] sm:w-[80%]">
               The AI-native career platform. Built for people who take their
               work seriously.
             </p>
@@ -75,7 +75,7 @@ const Footer = () => {
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="hover:text-white transition-colors text-[#B9B8C2]"
+                        className="hover:text-white transition-colors text-[#8A8A8B]"
                       >
                         {link.label}
                       </Link>
@@ -88,7 +88,7 @@ const Footer = () => {
         </div>
 
         {/* (Footer Bottom Part) - Socail Links and Copy Right and other simple dets.... */}
-        <div className="max-w-7xl mx-auto mt-14 border-t py-4 border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium text-gray-600">
+        <div className="max-w-7xl mx-auto mt-14 border-t py-4 border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium">
           {/* Socail Links */}
           <div className="flex items-center gap-3 pt-4">
             {socialLinks.map((social) => {
@@ -114,11 +114,11 @@ const Footer = () => {
           <div>
             <div className="flex flex-wrap justify-center items-center gap-2">
               <div>
-                <p className="text-[#B9B8C2]/50 mr-3">
+                <p className="text-[#8A8A8B]/70 mr-3">
                   Copyright 2026 —HireLoop
                 </p>
               </div>
-              <div className="flex items-center gap-2 text-[#B9B8C2]">
+              <div className="flex items-center gap-2 text-[#8A8A8B]">
                 <Link href="#" className="hover:text-white transition-colors">
                   Terms & Policy
                 </Link>

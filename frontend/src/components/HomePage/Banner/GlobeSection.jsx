@@ -34,7 +34,7 @@ const GlobeSection = () => {
       </div>
 
       {/* Cards */}
-      <div className="relative z-10 max-w-6xl w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="relative z-10 max-w-6xl w-full grid grid-cols-2 lg:grid-cols-4 gap-5">
         {statsData.map((stat) => {
           const IconComponent = stat.icon;
           return (

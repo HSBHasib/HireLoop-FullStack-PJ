@@ -9,9 +9,9 @@ const MobileMenuIcon = ({isMenuOpen, setIsMenuOpen}) => {
         aria-label="Toggle menu"
       >
         {isMenuOpen ? (
-          <HiMiniBars3 className="w-5 h-5" />
-        ) : (
           <HiXMark className="w-5 h-5" />
+        ) : (
+          <HiMiniBars3 className="w-5 h-5" />
         )}
       </button>
     </>
