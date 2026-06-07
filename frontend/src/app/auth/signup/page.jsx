@@ -6,11 +6,14 @@ import { Form, Button, TextField, Label } from "@heroui/react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
+import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
 
 const SignUpPage = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-    const {
+  const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -23,15 +26,39 @@ const SignUpPage = () => {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // Standard text schema payload target for BetterAuth pipeline
     console.log("SignUp Form Data Submitted successfully:", data);
+    const { name, email, password, image } = data;
+
+    const { data: dets, error } = await authClient.signUp.email({
+      name,
+      email,
+      password,
+      image,
+    });
+
+    if (error) {
+      // Error tracking handler sequence setup feedback mechanisms
+      toast.error(error.message, {
+        duration: 2000,
+      });
+      return;
+    }
+
+    if (dets) {
+      toast.success(
+        `Welcome ${name}! Your account has been created successfully.`,
+      {
+        duration: 1500,
+      });
+      redirect("/auth/signin");
+    }
   };
 
   const handleGoogleSignIn = () => {
     console.log("Redirecting to BetterAuth Google Social Provider workflow...");
   };
-
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden px-4 py-14">
@@ -78,9 +105,7 @@ const SignUpPage = () => {
               })}
             />
             {errors.name && (
-              <p className="text-xs text-red-500 mt-1">
-                {errors.name.message}
-              </p>
+              <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>
             )}
           </TextField>
 
@@ -107,7 +132,7 @@ const SignUpPage = () => {
             )}
           </TextField> */}
 
-           {/* Profile Image URL Field */}
+          {/* Profile Image URL Field */}
           <TextField isInvalid={!!errors.image} className="w-full">
             <Label className="text-zinc-300 text-sm font-medium mb-1">
               Profile Image URL
@@ -232,8 +257,6 @@ const SignUpPage = () => {
       </div>
     </div>
   );
-}
+};
 
-
-export default SignUpPage
-
+export default SignUpPage;

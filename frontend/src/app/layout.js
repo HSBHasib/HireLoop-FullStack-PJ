@@ -1,6 +1,7 @@
 import Navbar from "@/components/HomePage/Navbar/Navbar";
 import "./globals.css";
 import Footer from "@/components/HomePage/Footer/Footer";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Hire Loop",
@@ -14,6 +15,9 @@ export default function RootLayout({ children }) {
         <Navbar />
         <main>{children}</main>
         <Footer />
+
+
+         <Toaster />
       </body>
     </html>
   );
