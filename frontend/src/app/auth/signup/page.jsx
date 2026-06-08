@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form, Button, TextField, Label } from "@heroui/react";
 import Link from "next/link";
-import { FcGoogle } from "react-icons/fc";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
+import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,7 @@ const SignUpPage = () => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
 
+  // React Form Hook to handle form
   const {
     register,
     handleSubmit,
@@ -24,17 +25,20 @@ const SignUpPage = () => {
       image: "",
       email: "",
       password: "",
+      role: "job seeker",
     },
   });
 
+  // Handle Form Data to Manage SignUp and pass the data in DB
   const onSubmit = async (data) => {
-    const { name, email, password, image } = data;
+    const { name, email, password, image, role } = data;
 
     const { data: dets, error } = await authClient.signUp.email({
       name,
       email,
       password,
       image,
+      role,
     });
 
     if (error) {
@@ -56,6 +60,7 @@ const SignUpPage = () => {
     }
   };
 
+  // Handle Google SignIn
   const handleGoogleSignIn = async () => {
     try {
       await authClient.signIn.social({
@@ -92,6 +97,7 @@ const SignUpPage = () => {
           className="flex flex-col gap-4.5 w-full"
         >
           {/* Full Name Field */}
+          {/* Full Name Field */}
           <TextField isInvalid={!!errors.name} className="w-full">
             <Label className="text-zinc-300 text-sm font-medium mb-1">
               Full Name
@@ -99,7 +105,7 @@ const SignUpPage = () => {
             <input
               type="text"
               placeholder="Your Name"
-              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus:border-purple-500 focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
+              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
               {...register("name", {
                 required: "Name is required",
                 validate: {
@@ -121,7 +127,7 @@ const SignUpPage = () => {
           </TextField>
 
           {/* Skip */}
-          {/* Profile Image - Folder/Device Local Upload Option
+          {/* Profile Image - For Later
           <TextField isInvalid={!!errors.image} className="w-full">
             <Label className="text-zinc-300 text-sm font-medium mb-1">
               Profile Image
@@ -151,7 +157,7 @@ const SignUpPage = () => {
             <input
               type="url"
               placeholder="Image Url"
-              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus:border-purple-500 focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
+              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
               {...register("image", {
                 required: "Profile image reference URL is required",
               })}
@@ -171,7 +177,7 @@ const SignUpPage = () => {
             <input
               type="email"
               placeholder="Your Email"
-              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus:border-purple-500 focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
+              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
               {...register("email", {
                 required: "Email is required",
                 pattern: {
@@ -195,7 +201,7 @@ const SignUpPage = () => {
             <input
               type={isVisible ? "text" : "password"}
               placeholder="Your Password"
-              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus-border-purple-500 focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
+              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -224,6 +230,71 @@ const SignUpPage = () => {
               <p className="text-xs text-red-500 mt-1">
                 {errors.password.message}
               </p>
+            )}
+          </TextField>
+
+          {/* Role Filed */}
+          <TextField
+            isInvalid={!!errors.role}
+            className="w-full flex flex-col gap-2"
+          >
+            <Label className="text-zinc-300 text-sm font-medium mb-1.5">
+              Role / Account Type
+            </Label>
+
+            <div className="grid grid-cols-2 gap-4 w-full">
+              {/* Option 1: Job Seeker Card Input UI */}
+              <label
+                className={`flex flex-col items-start p-4 rounded-xl border bg-zinc-900/40 backdrop-blur-md cursor-pointer transition-all relative overflow-hidden group select-none ${
+                  errors.role
+                    ? "border-red-500/50"
+                    : "border-zinc-800 focus-within:border-[#5850EC] hover:border-[#5850EC]/50"
+                }`}
+              >
+                <div className="flex items-center gap-3 w-full">
+                  <input
+                    type="radio"
+                    value="job seeker"
+                    className="h-4 w-4 bg-zinc-950 border-zinc-800 cursor-pointer accent-[#5850EC]"
+                    {...register("role", {
+                      required:
+                        "Please select your role",
+                    })}
+                  />
+                  <span className="text-sm font-semibold text-white tracking-wide group-hover:text-zinc-200 transition-colors">
+                    Job Seeker
+                  </span>
+                </div>
+              </label>
+
+              {/* Option 2: Recruiter Card Input UI */}
+              <label
+                className={`flex flex-col items-start p-4 rounded-xl border bg-zinc-900/40 backdrop-blur-md cursor-pointer transition-all relative overflow-hidden group select-none ${
+                  errors.role
+                    ? "border-red-500/50"
+                    : "border-zinc-800 focus-within:border-[#5850EC] hover:border-[#5850EC]/50"
+                }`}
+              >
+                <div className="flex items-center gap-3 w-full">
+                  <input
+                    type="radio"
+                    value="recruiter"
+                    className="h-4 w-4 bg-zinc-950 border-zinc-800 cursor-pointer accent-[#5850EC]"
+                    {...register("role", {
+                      required:
+                        "Please select your role",
+                    })}
+                  />
+                  <span className="text-sm font-semibold text-white tracking-wide group-hover:text-zinc-200 transition-colors">
+                    Recruiter
+                  </span>
+                </div>
+              </label>
+            </div>
+
+            {/* Dynamic Red Validation Error Message Text Display */}
+            {errors.role && (
+              <p className="text-xs text-red-500 mt-1">{errors.role.message}</p>
             )}
           </TextField>
 
@@ -260,7 +331,7 @@ const SignUpPage = () => {
           Already have an account?{" "}
           <Link
             href="/auth/signin"
-            className="text-purple-400 hover:text-purple-300 hover:underline font-medium transition-colors"
+            className="text-[#5850EC] hover:text-[#818CF8] hover:underline font-medium transition-colors"
           >
             Sign In
           </Link>

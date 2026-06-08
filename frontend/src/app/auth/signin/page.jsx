@@ -14,6 +14,7 @@ export default function SignInPage() {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
 
+  // React Form Hook to handle form
   const {
     register,
     handleSubmit,
@@ -25,6 +26,7 @@ export default function SignInPage() {
     },
   });
 
+  // Handle Form Data to Manage SignIn and pass the data in DB
   const onSubmit = async (data) => {
     const { email, password } = data;
 
@@ -50,6 +52,7 @@ export default function SignInPage() {
     }
   };
 
+  // Handle Google SignIn
   const handleGoogleSignIn = async () => {
     try {
       await authClient.signIn.social({
@@ -70,7 +73,7 @@ export default function SignInPage() {
       {/* Background Ambient Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="w-full max-w-[440px] z-10 bg-zinc-900/40 backdrop-blur-xl border border-zinc-800/80 p-8 rounded-2xl shadow-2xl">
+      <div className="w-full max-w-110 z-10 bg-zinc-900/40 backdrop-blur-xl border border-zinc-800/80 p-8 rounded-2xl shadow-2xl">
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-white tracking-tight">
             Welcome back
@@ -93,7 +96,7 @@ export default function SignInPage() {
             <input
               type="email"
               placeholder="you@example.com"
-              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus:border-purple-500 focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
+              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
               {...register("email", {
                 required: "Email is required",
                 pattern: {
@@ -117,7 +120,7 @@ export default function SignInPage() {
             <input
               type={isVisible ? "text" : "password"}
               placeholder="Your Password"
-              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus-border-purple-500 focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
+              className="w-full h-10 px-3 bg-zinc-900/60 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white placeholder:text-zinc-600 text-sm transition-colors"
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -127,6 +130,7 @@ export default function SignInPage() {
               })}
             />
 
+            {/* Password Toggle Eye Icon */}
             <Button
               isIconOnly
               aria-label={isVisible ? "Hide password" : "Show password"}
@@ -181,7 +185,7 @@ export default function SignInPage() {
           Don&apos;t have an account?{" "}
           <Link
             href="/auth/signup"
-            className="text-purple-400 hover:text-purple-300 hover:underline font-medium transition-colors"
+            className="text-[#5850EC] hover:text-[#818CF8] hover:underline font-medium transition-colors"
           >
             Sign Up
           </Link>

@@ -16,6 +16,17 @@ export const auth = betterAuth({
     client,
   }),
 
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: true,
+        defaultValue: "job seeker",
+        input: true,
+      },
+    },
+  },
+
   // Socail SignIn
   socialProviders: {
     google: {
