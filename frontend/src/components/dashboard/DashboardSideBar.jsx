@@ -24,7 +24,7 @@ export default function DashboardSideBar() {
 
   // Recruiter Dashboard core navigation items list
   const navItems = [
-    { icon: LuLayoutDashboard, href: "/", label: "Dashboard" },
+    { icon: LuLayoutDashboard, href: "/dashboard/recruiter", label: "Dashboard" },
     { icon: LuBuilding2, href: "/", label: "My Company" },
     { icon: LuBriefcase, href: "/", label: "Manage Jobs" },
     { icon: LuFileSpreadsheet, href: "/", label: "Applications" },
@@ -92,8 +92,9 @@ export default function DashboardSideBar() {
           {navItems.map((item) => {
             const isActive = activeTab === item.label;
             return (
-              <button
-                key={item.label}
+              <Link
+              key={item.label}
+              href={item.href}
                 onClick={() => {
                   setActiveTab(item.label);
                 }}
@@ -102,7 +103,6 @@ export default function DashboardSideBar() {
                     ? "bg-zinc-900 text-white border-r-2 border-white"
                     : "text-[#7D7F80] hover:bg-zinc-900/40 hover:text-zinc-200"
                 }`}
-                type="button"
               >
                 <div className="flex items-center gap-3">
                   <item.icon
@@ -114,7 +114,7 @@ export default function DashboardSideBar() {
                   />
                   <span>{item.label}</span>
                 </div>
-              </button>
+              </Link>
             );
           })}
         </nav>
