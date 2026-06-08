@@ -31,7 +31,7 @@ const BannerTopDets = () => {
 
         {/* SearchBar */}
         <div className="w-full max-w-3xl bg-[#111115]/80 border border-white/5 p-2 rounded-2xl flex flex-col sm:flex-row items-center gap-2 shadow-2xl backdrop-blur-md mb-6">
-          <div className="w-full flex items-center gap-3 px-3 py-2 border-b sm:border-b-0 sm:border-r border-white/5">
+          <div className="w-full flex items-center gap-3 px-3 py-2 border-b sm:border-b-0 sm:border-r border-white/15">
             <FiSearch className="text-[#CCCCCD] text-lg flex-shrink-0" />
             <input
               type="text"

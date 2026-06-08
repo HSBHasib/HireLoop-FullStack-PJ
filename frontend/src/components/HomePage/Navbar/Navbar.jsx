@@ -1,14 +1,31 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "@heroui/react";
+import { Button, Spinner } from "@heroui/react";
 import MobileMenuIcon from "./MobileMenuIcon";
 import MobileResponsiveDropDown from "./MobileResponsiveDropDown";
 import { useState } from "react";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
-const AppNavbar = () => {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    try {
+      await authClient.signOut();
+      toast.success("Logged out Successful!", { duration: 1000 });
+      router.refresh();
+    } catch (err) {
+      toast.error("Logout runtime error.");
+    }
+  };
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
+
   const menuItems = [
     {
       link: "Browse Jobs",
@@ -23,6 +40,7 @@ const AppNavbar = () => {
       href: "/pricing",
     },
   ];
+
   return (
     <div className="sticky top-4 z-70 w-full px-4 ">
       <nav className="max-w-7xl mx-auto  flex items-center justify-between">
@@ -38,13 +56,13 @@ const AppNavbar = () => {
               width={500}
               height={500}
               priority
-              className="object-contain h-auto w-[100px]"
+              className="object-contain h-auto w-25"
             />
           </Link>
         </div>
 
         {/* Right Side: Desktop All Links */}
-        <div className="hidden md:flex gap-6 h-[62px] bg-[#1E1E20]/60 border border-white/5 rounded-2xl px-6">
+        <div className="hidden md:flex gap-6 h-15.5 bg-[#1E1E20]/60 border border-white/5 rounded-2xl px-6">
           {/* Desktop Navigation Links */}
           <ul className="hidden md:flex items-center gap-6">
             {menuItems.map((item, idx) => (
@@ -64,16 +82,40 @@ const AppNavbar = () => {
             {/* Divider */}
             <span className="hidden md:inline text-white/20 text-xl">|</span>
 
-            <Link
-              className="text-sm font-semibold text-[#6366F1] hover:text-[#818CF8] hover:underline transition-colors "
-              href="/auth/signin"
-            >
-              Sign In
-            </Link>
+            {isPending ? (
+              <div className=" flex items-center justify-center">
+                <Spinner
+                  color="purple"
+                  label="Fetching session streams..."
+                  size="lg"
+                />
+              </div>
+            ) : user ? (
+              <>
+                <span className="text-white/85">
+                  Hi, {user?.name || "Undefined"}!
+                </span>
+                <Button
+                  onClick={handleSignOut}
+                  className="bg-[#5850EC] hover:bg-[#685FFF] text-white font-semibold text-sm px-6 h-10 rounded-xl transition-all duration-200 active:scale-95 shadow-md"
+                >
+                  SignOut
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link
+                  className="text-sm font-semibold text-[#6366F1] hover:text-[#818CF8] hover:underline transition-colors "
+                  href="/auth/signin"
+                >
+                  Sign In
+                </Link>
 
-            <Button className="bg-[#5850EC] hover:bg-[#685FFF] text-white font-semibold text-sm px-6 h-10 rounded-xl transition-all duration-200 active:scale-95 shadow-md">
-              <Link href="/auth/signup">Get Started</Link>
-            </Button>
+                <Button className="bg-[#5850EC] hover:bg-[#685FFF] text-white font-semibold text-sm px-6 h-10 rounded-xl transition-all duration-200 active:scale-95 shadow-md">
+                  <Link href="/auth/signup">Get Started</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
 
@@ -83,6 +125,9 @@ const AppNavbar = () => {
 
       {/* Mobile Responsive Dropdown Menu */}
       <MobileResponsiveDropDown
+        isPending={isPending}
+        user={user}
+        handleSignOut={handleSignOut}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         menuItems={menuItems}
@@ -91,5 +136,4 @@ const AppNavbar = () => {
   );
 };
 
-export default AppNavbar;
-
+export default Navbar;

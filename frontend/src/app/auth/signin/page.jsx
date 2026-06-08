@@ -6,12 +6,14 @@ import { Form, Button, TextField, Label } from "@heroui/react";
 import Link from "next/link";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 export default function SignInPage() {
   const [isVisible, setIsVisible] = useState(false);
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -34,25 +36,33 @@ export default function SignInPage() {
 
     if (error) {
       // Error tracking handler sequence setup feedback mechanisms
-      toast.error(error.message, {
+      toast.error(error.message || "Something went wrong.", {
         duration: 2000,
       });
       return;
     }
 
     if (dets) {
-      toast.success(
-        `Sign In Successful.`,
-        {
-          duration: 1500,
-        },
-      );
-      redirect("/");
+      toast.success(`Sign In Successful.`, {
+        duration: 1500,
+      });
+      router.push("/");
     }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("Redirecting to BetterAuth Google Social Provider workflow...");
+  const handleGoogleSignIn = async () => {
+    try {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+    } catch (error) {
+      console.error(
+        "Google authentication intercept flow failure crashed:",
+        error,
+      );
+      toast.error("Google login failed.");
+    }
   };
 
   return (
@@ -170,7 +180,7 @@ export default function SignInPage() {
         <p className="text-center text-zinc-500 text-sm mt-6">
           Don&apos;t have an account?{" "}
           <Link
-            href="/signup"
+            href="/auth/signup"
             className="text-purple-400 hover:text-purple-300 hover:underline font-medium transition-colors"
           >
             Sign Up

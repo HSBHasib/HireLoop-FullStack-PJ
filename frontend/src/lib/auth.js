@@ -8,9 +8,19 @@ const db = client.db(process.env.DB_NAME);
 export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
+    autoSignIn: false,
   },
+
   database: mongodbAdapter(db, {
     // Optional: if you don't provide a client, database transactions won't be enabled.
     client,
   }),
+
+  // Socail SignIn
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    },
+  },
 });

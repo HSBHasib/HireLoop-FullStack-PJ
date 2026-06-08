@@ -8,10 +8,11 @@ import { FcGoogle } from "react-icons/fc";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const SignUpPage = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -27,7 +28,6 @@ const SignUpPage = () => {
   });
 
   const onSubmit = async (data) => {
-    // Standard text schema payload target for BetterAuth pipeline
     const { name, email, password, image } = data;
 
     const { data: dets, error } = await authClient.signUp.email({
@@ -39,7 +39,7 @@ const SignUpPage = () => {
 
     if (error) {
       // Error tracking handler sequence setup feedback mechanisms
-      toast.error(error.message, {
+      toast.error(error.message || "Something went wrong.", {
         duration: 2000,
       });
       return;
@@ -48,15 +48,27 @@ const SignUpPage = () => {
     if (dets) {
       toast.success(
         `Welcome ${name}! Your account has been created successfully.`,
-      {
-        duration: 1500,
-      });
-      redirect("/auth/signin");
+        {
+          duration: 1500,
+        },
+      );
+      router.push("/auth/signin");
     }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("Redirecting to BetterAuth Google Social Provider workflow...");
+  const handleGoogleSignIn = async () => {
+    try {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+    } catch (error) {
+      console.error(
+        "Google authentication intercept flow failure crashed:",
+        error,
+      );
+      toast.error("Google login failed.");
+    }
   };
 
   return (
