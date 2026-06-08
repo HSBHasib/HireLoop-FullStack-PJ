@@ -1,9 +1,26 @@
+import StatCards from "@/components/dashboard/StatCards";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import React from "react";
 
-const RecruiterDashboard = () => {
-  return <div>
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate accusantium magnam quis deleniti explicabo ab iusto natus debitis impedit tempora atque cupiditate dolor ducimus assumenda aspernatur, at, dolorem, eligendi consectetur.
-  </div>;
+const RecruiterDashboard = async () => {
+  const { data: session } = await auth.api.getSession({
+    headers: await headers(),
+  });
+ const recruiterName = session?.name || "Recruiter Name"; 
+
+  console.log("session data - ", session);
+  console.log("Name is  - ", recruiterName);
+  return (
+    <div className="p-4 mt-1">
+      <div className="mb-8 mt-12 lg:mt-0">
+        <h1 className="text-3xl font-semibold tracking-tight text-zinc-100">
+          Welcome back, {recruiterName}
+        </h1>
+      </div>
+      <StatCards />
+    </div>
+  );
 };
 
 export default RecruiterDashboard;

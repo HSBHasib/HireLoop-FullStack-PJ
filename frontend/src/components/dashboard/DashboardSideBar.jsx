@@ -35,7 +35,7 @@ export default function DashboardSideBar() {
     <>
       <div className="flex flex-col h-full bg-[#0A0A0A] p-0.5 lg:p-5 w-full select-none">
         {/* 1. Company Logo Area */}
-        <div className="hidden lg:block mb-6 px-2 items-center gap-2">
+        {/* <div className="hidden lg:block mb-6 px-2 items-center gap-2">
           <Link
             href="/"
             className="flex items-center transition-opacity hover:opacity-90"
@@ -49,7 +49,7 @@ export default function DashboardSideBar() {
               className="object-contain h-auto w-25"
             />
           </Link>
-        </div>
+        </div> */}
 
         {/* 2. Profile Details Component Box */}
         {isPending ? (
@@ -125,7 +125,7 @@ export default function DashboardSideBar() {
   return (
     <>
       {/* --- DESKTOP VIEW --- */}
-      <aside className="hidden lg:flex w-64 fixed left-0 top-0 h-screen border-r border-t border-zinc-900 bg-[#0A0A0A] shrink-0 z-50">
+      <aside className="hidden lg:flex w-64 h-min-screen border-r border-t border-zinc-900 bg-[#0A0A0A] shrink-0 z-10">
         {sideBarContent}
       </aside>
 
