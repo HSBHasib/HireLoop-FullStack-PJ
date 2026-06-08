@@ -1,6 +1,6 @@
-import Navbar from "@/components/HomePage/Navbar/Navbar";
+import Navbar from "@/components/homePage/Navbar/Navbar";
 import "./globals.css";
-import Footer from "@/components/HomePage/Footer/Footer";
+import Footer from "@/components/homePage/Footer/Footer";
 import { Toaster } from "react-hot-toast";
 
 export const metadata = {
@@ -14,7 +14,6 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col bg-[#010103]">
         <Navbar />
         <main>{children}</main>
-        <Footer />
 
          <Toaster />
       </body>

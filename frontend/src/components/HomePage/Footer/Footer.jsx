@@ -42,7 +42,7 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="w-full border-t pt-14 px-6">
+      <footer className="w-full border-t border-zinc-900 pt-14 px-6">
         {/* Footer Top Part */}
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12">
           {/* Footer Company Logo and Info Msg about company */}

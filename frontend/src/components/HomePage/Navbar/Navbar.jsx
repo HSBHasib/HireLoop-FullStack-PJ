@@ -42,8 +42,8 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="sticky top-4 z-70 w-full px-4 ">
-      <nav className="max-w-7xl mx-auto  flex items-center justify-between">
+    <div className="sticky top-4 z-40 w-full px-4 h-20">
+      <nav className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Left Side: Logo Image Section */}
         <div className="flex items-center">
           <Link
