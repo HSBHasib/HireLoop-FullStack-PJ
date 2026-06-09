@@ -13,6 +13,10 @@ import { Avatar, Button, Drawer, Spinner } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
+import { FaRegBell } from "react-icons/fa";
+
+import { PiMagnifyingGlassDuotone } from "react-icons/pi";
+
 import { LayoutSideContentLeft } from "@gravity-ui/icons";
 
 export default function DashboardSideBar() {
@@ -20,13 +24,13 @@ export default function DashboardSideBar() {
 
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
-  console.log(user);
 
   // Recruiter Dashboard core navigation items list
   const navItems = [
     { icon: LuLayoutDashboard, href: "/dashboard/recruiter", label: "Dashboard" },
-    { icon: LuBuilding2, href: "/", label: "My Company" },
-    { icon: LuBriefcase, href: "/", label: "Manage Jobs" },
+    { icon: PiMagnifyingGlassDuotone, href: "/dashboard/recruiter/jobs", label: "Manage Jobs" },
+    { icon: FaRegBell, href: "/dashboard/recruiter/jobs/new", label: "Create A Jobs" },
+    { icon: LuBuilding2, href: "/dashboard/recruiter/company", label: "Company Profile" },
     { icon: LuFileSpreadsheet, href: "/", label: "Applications" },
     { icon: LuSettings, href: "/", label: "Settings" },
   ];

@@ -5,10 +5,16 @@ import { useForm } from "react-hook-form";
 import { Form, Button, TextField, Label } from "@heroui/react";
 import { LuMapPin, LuCalendar } from "react-icons/lu";
 import { toast } from "react-hot-toast";
+import { newJobsFunc } from "@/lib/actions/newJob";
+import { redirect } from "next/navigation";
 const NewJobs = () => {
+
+const recruiterCompany = "Saboo_19" ;
+
 const {
   register,
   handleSubmit,
+  reset,
   formState: { errors, isSubmitting },
 } = useForm({
   defaultValues: {
@@ -29,8 +35,24 @@ const {
 
 
   const onSubmit = async (data) => {
-    console.log("Job Processing Submitted Payload:", data);
-    toast.success("Job position posted successfully!");
+    const formData = {
+      ...data,
+      companyId: recruiterCompany,
+      status: "active"
+    }
+    const res = await newJobsFunc(formData);
+    
+    if(res.insertedId){
+      reset();
+      toast.success("Job posted successfully!");
+    } else {
+      toast.error("Something Went Wrong!", {
+        duration: 1500,
+      })
+    }
+
+    // Redirect to recruiter dashboard route after succeefully form submition.
+    redirect("/dashboard/recruiter");
   };
   return (
     <div className="min-h-screen bg-black text-white p-6 md:p-10 flex items-center justify-center select-none">
@@ -46,7 +68,7 @@ const {
           </p>
         </div>
 
-        {/* HeroUI v3 Form Component */}
+        {/* Form Component */}
         <Form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-5 w-full"

@@ -9,8 +9,8 @@ const RecruiterDashboard = async () => {
   });
  const recruiterName = session?.name || "Recruiter Name"; 
 
-  console.log("session data - ", session);
-  console.log("Name is  - ", recruiterName);
+  // console.log("session data - ", session);
+  // console.log("Name is  - ", recruiterName);
   return (
     <div className="p-4 mt-1">
       <div className="mb-8 mt-12 lg:mt-0">
