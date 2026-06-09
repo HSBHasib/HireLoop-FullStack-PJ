@@ -378,4 +378,3 @@ const {
 };
 
 export default NewJobs;
-
