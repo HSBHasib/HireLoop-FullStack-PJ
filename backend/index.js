@@ -28,6 +28,7 @@ async function run() {
 
     const db = client.db("hireloopDB");
     const newJobsCollection = db.collection("newJobs");
+    const companyCollection = db.collection("company");
 
 
     app.get("/api/jobs", async(req, res) => {
@@ -46,6 +47,14 @@ async function run() {
     app.post("/api/jobs", async (req, res) => {
         const newJobsData = req.body;
         const result = await newJobsCollection.insertOne(newJobsData);
+        
+        res.send(result);
+    })
+
+    // Inset Company Data on MongoDB
+    app.post("/api/companies", async (req, res) => {
+        const companyData = req.body;
+        const result = await companyCollection.insertOne(companyData);
         
         res.send(result);
     })
