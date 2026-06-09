@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Modal, TextField, Label, Form } from "@heroui/react";
-import toast from "react-hot-toast"; 
+import toast from "react-hot-toast";
 
 // React Icons
 import {
@@ -19,15 +19,23 @@ import {
   FiGlobe,
   FiChevronDown,
 } from "react-icons/fi";
+import { createCompanyFunc } from "@/lib/actions/companies";
+import CompanyProfile from "@/components/dashboard/CompanyProfile";
 
-const initialCompanyState = {
-  registered: false,
-  details: null,
-};
-
-// Main Component as Arrow Function
 const RecruiterCompany = () => {
-  const [company, setCompany] = useState(initialCompanyState);
+  // Correct React State for Company Object Management
+  const [company, setCompany] = useState({
+    registered: false,
+    name: "",
+    industry: "",
+    website: "",
+    location: "",
+    employeeCount: "1-10",
+    logoUrl: "",
+    description: "",
+    status: "Pending"
+  });
+
   const [loadingLogo, setLoadingLogo] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [modalMode, setModalMode] = useState("add");
@@ -73,7 +81,7 @@ const RecruiterCompany = () => {
   };
 
   // ImgBB Upload Flow
-  const handleFileChange = async (event) => {
+  const handleImage = async (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -102,18 +110,16 @@ const RecruiterCompany = () => {
       if (!response.ok) {
         throw new Error(result.error?.message || "Upload failed");
       }
-
       setValue("logoUrl", result.data.url);
       toast.success("Logo uploaded successfully!");
     } catch (error) {
-      console.error("Error uploading logo:", error);
       toast.error(`Failed to upload logo: ${error.message}`);
     } finally {
       setLoadingLogo(false);
     }
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (!data.logoUrl) {
       toast.error("Please upload a company logo.");
       return;
@@ -121,30 +127,44 @@ const RecruiterCompany = () => {
 
     const submittedData = {
       ...data,
-      status: modalMode === "add" ? "Pending" : company.details.status,
+      status: modalMode === "add" ? "Pending" : company.status,
     };
 
-    setCompany({
+    const updatedCompany = {
+      ...submittedData,
       registered: true,
-      details: submittedData,
-    });
+    };
 
-    setIsOpen(false);
-    toast.success(
-      modalMode === "add"
-        ? "Company registered configuration successful!"
-        : "Company profile updated successfully!"
-    );
-  };
+    try {
+      // Server Action Call
+      const companyData = await createCompanyFunc(updatedCompany);
 
-  const onError = (errors) => {
-    const firstError = Object.values(errors)[0];
-    if (firstError) {
-      toast.error(firstError.message);
+      if (companyData?.insertedId) {
+        setCompany(updatedCompany);
+        setIsOpen(false);
+
+        toast.success(
+          modalMode === "add"
+            ? "Company registered configuration successful!"
+            : "Company profile updated successfully!",
+        );
+      } else {
+        toast.error("Failed to save changes into Database.");
+      }
+    } catch (err) {
+      toast.error("Something went wrong processing standard actions.");
     }
   };
 
-  // Status Badge
+  // Helper Function for Website Link Formatting
+  const formatWebsiteUrl = (url) => {
+    if (!url) return "#";
+    return url.startsWith("http://") || url.startsWith("https://")
+      ? url
+      : `https://${url}`;
+  };
+
+  // Status Badge Rendering Logic
   const getStatusBadge = (status) => {
     switch (status) {
       case "Approved":
@@ -171,8 +191,7 @@ const RecruiterCompany = () => {
 
   return (
     <div className="min-h-screen bg-[#09090b] text-zinc-100 flex flex-col items-center justify-start p-6 pt-10">
-      
-      {/* 1. Unregistered State Prompt */}
+      {/* If Company Didn't Registeded */}
       {!company.registered ? (
         <div className="max-w-[90%] lg:max-w-[80%] w-full p-8 bg-[#0A0A0A] border border-zinc-800 rounded-2xl shadow-2xl flex flex-col items-center justify-center text-center">
           <div className="p-3 bg-zinc-800/30 rounded-full mb-6 border border-zinc-800">
@@ -181,7 +200,7 @@ const RecruiterCompany = () => {
           <h1 className="text-2xl font-bold tracking-tight mb-2 text-white/90">
             No Company Registered
           </h1>
-          <p className="text-white/75 text-sm max-w-[420px] mb-8 leading-relaxed">
+          <p className="text-white/75 text-sm max-w-105 mb-8 leading-relaxed">
             To start recruiting on{" "}
             <span className="text-white font-medium">hireLoop</span>, you need
             to register your company configuration first.
@@ -194,110 +213,115 @@ const RecruiterCompany = () => {
           </button>
         </div>
       ) : (
-        /* 2. Registered Company Profile Card */
-        <div className="max-w-200 w-full p-5 bg-[#0A0A0A] border border-zinc-800 rounded-2xl shadow-xl space-y-6">
-          <div className="flex justify-between items-start border-b border-zinc-800 pb-6">
-            <div className="flex gap-5 items-center">
-              {company.details.logoUrl ? (
-                <img
-                  src={company.details.logoUrl}
-                  alt="Company Logo"
-                  className="w-20 h-20 border-2 border-zinc-800 rounded-xl bg-zinc-900 object-cover"
-                />
-              ) : (
-                <div className="w-20 h-20 border-2 border-zinc-800 rounded-xl bg-zinc-900 flex items-center justify-center text-zinc-600">
-                  <FiBriefcase size={32} />
-                </div>
-              )}
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-3 flex-wrap">
-                  <h2 className="text-2xl font-bold tracking-tight text-white">
-                    {company.details.name}
-                  </h2>
-                  {getStatusBadge(company.details.status)}
-                </div>
-                {company.details.website && (
-                  <a
-                    href={`https://${company.details.website}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-zinc-400 text-sm hover:text-white flex items-center gap-1.5 transition-colors"
-                  >
-                    <FiGlobe size={14} /> {company.details.website}
-                  </a>
-                )}
-              </div>
-            </div>
-            <button
-              onClick={() => openFormModal("edit", company.details)}
-              className="flex items-center gap-1.5 border border-zinc-800 text-zinc-300 hover:bg-zinc-800/50 px-4 py-2 rounded-xl text-sm font-medium transition-colors cursor-pointer"
-            >
-              <FiEdit3 size={14} /> Edit Profile
-            </button>
-          </div>
+        /* If Company Registeded than show their company - 'Card' */
+        // <div className="max-w-200 w-full p-5 bg-[#0A0A0A] border border-zinc-800 rounded-2xl shadow-xl space-y-6">
+        //   <div className="flex justify-between items-start border-b border-zinc-800 pb-6">
+        //     <div className="flex gap-5 items-center">
+        //       {company.logoUrl ? (
+        //         <img
+        //           src={company.logoUrl}
+        //           alt="Company Logo"
+        //           className="w-20 h-20 border-2 border-zinc-800 rounded-xl bg-zinc-900 object-cover"
+        //         />
+        //       ) : (
+        //         <div className="w-20 h-20 border-2 border-zinc-800 rounded-xl bg-zinc-900 flex items-center justify-center text-zinc-600">
+        //           <FiBriefcase size={32} />
+        //         </div>
+        //       )}
+        //       <div className="space-y-1.5">
+        //         <div className="flex items-center gap-3 flex-wrap">
+        //           <h2 className="text-2xl font-bold tracking-tight text-white">
+        //             {company.name}
+        //           </h2>
+        //           {getStatusBadge(company.status)}
+        //         </div>
+        //         {company.website && (
+        //           <a
+        //             href={formatWebsiteUrl(company.website)}
+        //             target="_blank"
+        //             rel="noreferrer"
+        //             className="text-zinc-400 text-sm hover:text-white flex items-center gap-1.5 transition-colors"
+        //           >
+        //             <FiGlobe size={14} /> {company.website}
+        //           </a>
+        //         )}
+        //       </div>
+        //     </div>
+        //     <button
+        //       onClick={() => openFormModal("edit", company)}
+        //       className="flex items-center gap-1.5 border border-zinc-800 text-zinc-300 hover:bg-zinc-800/50 px-4 py-2 rounded-xl text-sm font-medium transition-colors cursor-pointer"
+        //     >
+        //       <FiEdit3 size={14} /> Edit Profile
+        //     </button>
+        //   </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-            <div className="bg-zinc-900/40 border border-zinc-800 p-4 rounded-xl flex items-center gap-3.5">
-              <div className="p-2.5 bg-zinc-800/50 rounded-lg text-zinc-400">
-                <FiBriefcase size={20} />
-              </div>
-              <div>
-                <p className="text-xs text-zinc-500 font-medium">Industry</p>
-                <p className="text-sm font-semibold text-zinc-200">
-                  {company.details.industry}
-                </p>
-              </div>
-            </div>
+        //   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+        //     <div className="bg-zinc-900/40 border border-zinc-800 p-4 rounded-xl flex items-center gap-3.5">
+        //       <div className="p-2.5 bg-zinc-800/50 rounded-lg text-zinc-400">
+        //         <FiBriefcase size={20} />
+        //       </div>
+        //       <div>
+        //         <p className="text-xs text-zinc-500 font-medium">Industry</p>
+        //         <p className="text-sm font-semibold text-zinc-200">
+        //           {company.industry}
+        //         </p>
+        //       </div>
+        //     </div>
 
-            <div className="bg-zinc-900/40 border border-zinc-800 p-4 rounded-xl flex items-center gap-3.5">
-              <div className="p-2.5 bg-zinc-800/50 rounded-lg text-zinc-400">
-                <FiMapPin size={20} />
-              </div>
-              <div>
-                <p className="text-xs text-zinc-500 font-medium">Location</p>
-                <p className="text-sm font-semibold text-zinc-200">
-                  {company.details.location}
-                </p>
-              </div>
-            </div>
+        //     <div className="bg-zinc-900/40 border border-zinc-800 p-4 rounded-xl flex items-center gap-3.5">
+        //       <div className="p-2.5 bg-zinc-800/50 rounded-lg text-zinc-400">
+        //         <FiMapPin size={20} />
+        //       </div>
+        //       <div>
+        //         <p className="text-xs text-zinc-500 font-medium">Location</p>
+        //         <p className="text-sm font-semibold text-zinc-200">
+        //           {company.location}
+        //         </p>
+        //       </div>
+        //     </div>
 
-            <div className="bg-zinc-900/40 border border-zinc-800 p-4 rounded-xl flex items-center gap-3.5">
-              <div className="p-2.5 bg-zinc-800/50 rounded-lg text-zinc-400">
-                <FiUsers size={20} />
-              </div>
-              <div>
-                <p className="text-xs text-zinc-500 font-medium">Employees</p>
-                <p className="text-sm font-semibold text-zinc-200">
-                  {company.details.employeeCount || "Not Specified"}
-                </p>
-              </div>
-            </div>
+        //     <div className="bg-zinc-900/40 border border-zinc-800 p-4 rounded-xl flex items-center gap-3.5">
+        //       <div className="p-2.5 bg-zinc-800/50 rounded-lg text-zinc-400">
+        //         <FiUsers size={20} />
+        //       </div>
+        //       <div>
+        //         <p className="text-xs text-zinc-500 font-medium">Employees</p>
+        //         <p className="text-sm font-semibold text-zinc-200">
+        //           {company.employeeCount || "Not Specified"}
+        //         </p>
+        //       </div>
+        //     </div>
 
-            <div className="md:col-span-3 space-y-2 mt-2">
-              <p className="text-sm font-medium text-zinc-400">
-                Brief Description
-              </p>
-              <div className="bg-zinc-900/40 border border-zinc-800 p-5 rounded-xl text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap">
-                {company.details.description || "No description provided."}
-              </div>
-            </div>
-          </div>
-        </div>
+        //     <div className="md:col-span-3 space-y-2 mt-2">
+        //       <p className="text-sm font-medium text-zinc-400">
+        //         Brief Description
+        //       </p>
+        //       <div className="bg-zinc-900/40 border border-zinc-800 p-5 rounded-xl text-zinc-300 text-sm leading-relaxed whitespace-pre-wrap">
+        //         {company.description || "No description provided."}
+        //       </div>
+        //     </div>
+        //   </div>
+        // </div>
+
+
+        <CompanyProfile getStatusBadge={getStatusBadge}/>
       )}
 
-      {/* 3. HeroUI v3 Modern Modal View */}
-      <Modal isOpen={isOpen} onOpenChange={setIsOpen} >
+      {/* Get Company Details */}
+      <Modal isOpen={isOpen} onOpenChange={setIsOpen}>
         <Modal.Backdrop className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-10">
           <Modal.Container>
-            <Modal.Dialog className="max-w-2xl overflow-y-auto">
-              <Modal.CloseTrigger 
+            <Modal.Dialog className="max-w-2xl overflow-y-auto relative bg-[#0C0C0E] border border-zinc-800 rounded-2xl p-6">
+              <Modal.CloseTrigger
                 onClick={() => setIsOpen(false)}
                 className="absolute top-4 right-4 text-zinc-400 hover:text-white p-1 rounded-full hover:bg-zinc-800 transition-colors cursor-pointer"
               />
-              
+
               <Modal.Header className="flex flex-col gap-1 border-b border-zinc-800/50 pb-5 mb-5">
                 <Modal.Heading className="text-xl font-bold text-white tracking-wide">
-                  {modalMode === "add" ? "Register New Company" : "Edit Company Profile"}
+                  {modalMode === "add"
+                    ? "Register New Company"
+                    : "Edit Company Profile"}
                 </Modal.Heading>
                 <p className="text-xs font-normal text-zinc-400 mt-1">
                   Enter your business details to start hiring on HireLoop.
@@ -306,13 +330,15 @@ const RecruiterCompany = () => {
 
               <Modal.Body>
                 <Form
-                  onSubmit={handleSubmit(onSubmit, onError)}
+                  onSubmit={handleSubmit(onSubmit)}
                   className="flex flex-col gap-5 w-full"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
-                    
                     {/* Company Name */}
-                    <TextField isInvalid={!!errors.name} className="w-full flex flex-col">
+                    <TextField
+                      isInvalid={!!errors.name}
+                      className="w-full flex flex-col"
+                    >
                       <Label className="text-zinc-300 text-sm font-medium mb-1.5">
                         Company Name
                       </Label>
@@ -321,7 +347,7 @@ const RecruiterCompany = () => {
                         placeholder="e.g. Acme Corp"
                         className="w-full h-10 px-3 bg-zinc-900/40 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white placeholder:text-zinc-700 text-sm transition-colors"
                         {...register("name", {
-                          required: "Company name profile mandatory",
+                          required: "Company name is mandatory",
                         })}
                       />
                       {errors.name && (
@@ -332,7 +358,10 @@ const RecruiterCompany = () => {
                     </TextField>
 
                     {/* Industry Select */}
-                    <TextField isInvalid={!!errors.industry} className="w-full flex flex-col relative">
+                    <TextField
+                      isInvalid={!!errors.industry}
+                      className="w-full flex flex-col relative"
+                    >
                       <Label className="text-zinc-300 text-sm font-medium mb-1.5">
                         Industry / Category
                       </Label>
@@ -340,7 +369,7 @@ const RecruiterCompany = () => {
                         <select
                           className="w-full h-10 pl-3 pr-10 bg-zinc-900/40 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white text-sm transition-colors appearance-none cursor-pointer"
                           {...register("industry", {
-                            required: "Industry category selection mandatory",
+                            required: "Industry category selection is mandatory",
                           })}
                         >
                           <option value="" disabled className="bg-[#18181b] text-zinc-600">
@@ -369,20 +398,20 @@ const RecruiterCompany = () => {
                         Website URL
                       </Label>
                       <div className="relative flex items-center w-full">
-                        <span className="absolute left-3 text-zinc-500 text-sm select-none">
-                          https://
-                        </span>
                         <input
                           type="text"
-                          placeholder="www.company.com"
-                          className="w-full h-10 pl-16 pr-3 bg-zinc-900/40 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white placeholder:text-zinc-700 text-sm transition-colors"
+                          placeholder="https://www.company.com"
+                          className="w-full h-10 px-3 bg-zinc-900/40 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white placeholder:text-zinc-700 text-sm transition-colors"
                           {...register("website")}
                         />
                       </div>
                     </TextField>
 
                     {/* Location */}
-                    <TextField isInvalid={!!errors.location} className="w-full flex flex-col">
+                    <TextField
+                      isInvalid={!!errors.location}
+                      className="w-full flex flex-col"
+                    >
                       <Label className="text-zinc-300 text-sm font-medium mb-1.5">
                         Location
                       </Label>
@@ -396,7 +425,7 @@ const RecruiterCompany = () => {
                           placeholder="City, Country"
                           className="w-full h-10 pl-9 pr-3 bg-zinc-900/40 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white placeholder:text-zinc-700 text-sm transition-colors"
                           {...register("location", {
-                            required: "Location profile setup mandatory",
+                            required: "Location profile setup is mandatory",
                           })}
                         />
                       </div>
@@ -465,7 +494,7 @@ const RecruiterCompany = () => {
                       <input
                         id="logo-file-input"
                         type="file"
-                        onChange={handleFileChange}
+                        onChange={handleImage}
                         accept="image/*"
                         className="hidden"
                       />
@@ -473,7 +502,10 @@ const RecruiterCompany = () => {
                   </div>
 
                   {/* Brief Description */}
-                  <TextField isInvalid={!!errors.description} className="w-full flex flex-col">
+                  <TextField
+                    isInvalid={!!errors.description}
+                    className="w-full flex flex-col"
+                  >
                     <Label className="text-zinc-300 text-sm font-medium mb-1.5">
                       Job Details & Brief Description
                     </Label>
@@ -482,7 +514,7 @@ const RecruiterCompany = () => {
                       placeholder="Tell us about the essence of this dynamic role vacancy overview..."
                       className="w-full p-3 bg-zinc-900/40 border border-zinc-800 focus:border-[#5850EC] focus:outline-none rounded-xl text-white placeholder:text-zinc-700 text-sm transition-colors resize-none"
                       {...register("description", {
-                        required: "Description overview profile mandatory",
+                        required: "Description profile field is mandatory",
                       })}
                     />
                     {errors.description && (
@@ -519,5 +551,3 @@ const RecruiterCompany = () => {
 };
 
 export default RecruiterCompany;
-
-
