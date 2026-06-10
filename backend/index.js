@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const app = express();
 const port = process.env.PORT;
@@ -30,7 +30,25 @@ async function run() {
     const newJobsCollection = db.collection("newJobs");
     const companyCollection = db.collection("company");
 
+    // Get All Jobs Data
+    app.get("/api/jobs", async (req, res) => {
+        const cursor = await newJobsCollection.find();
+        const result = await cursor.toArray();
+        res.send(result);
+    })
 
+    // Get Indivisual Jobs Data
+    app.get("/api/jobs/:id", async (req, res) => {
+
+        const {id} = req.params;
+        const query = {
+          _id: new ObjectId(id)
+        }
+        const result = await newJobsCollection.findOne(query);
+        res.send(result);
+    })
+    
+    // Get Job Data based on Company
     app.get("/api/jobs", async (req, res) => {
         const query = req.query;
 
@@ -66,7 +84,6 @@ async function run() {
         }
         res.send(result);
 
-        res.send(result);
     })
 
     // Inset Company Data on MongoDB
