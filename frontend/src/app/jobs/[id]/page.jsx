@@ -117,7 +117,10 @@ const JobDetailsPage = async ({ params }) => {
           {/* Left Side */}
           <div className="lg:col-span-2 flex flex-col gap-5">
             {sectionConfig.map((jobData, idx) => (
-              <section key={idx} className="bg-[#121212] border border-neutral-900 rounded-[24px] p-6 flex flex-col shadow-xl">
+              <section
+                key={idx}
+                className="bg-[#121212] border border-neutral-900 rounded-[24px] p-6 flex flex-col shadow-xl"
+              >
                 <h3 className="text-lg font-bold text-white tracking-wide border-b border-neutral-900 pb-3 flex items-center gap-2">
                   <span className="w-1.5 h-4 bg-indigo-500 rounded-full" />
                   {jobData.title}
@@ -132,9 +135,11 @@ const JobDetailsPage = async ({ params }) => {
           {/* Right Side: Job OverView */}
           <div className="flex flex-col gap-4 lg:sticky lg:top-6">
             <div className="bg-[#121212] border border-neutral-900 rounded-[24px] p-6 flex flex-col gap-5 shadow-xl relative overflow-hidden">
-              <h4 className="text-sm font-bold tracking-widest text-neutral-400 uppercase mb-2 border-b border-neutral-900 ">
-                Job Overview Matrix
-              </h4>
+              <div>
+                <h4 className="text-sm font-semibold tracking-widest text-white/60 uppercase pb-3 border-b border-neutral-800 ">
+                  Job Overview Matrix
+                </h4>
+              </div>
 
               {/* Salary  */}
               <div className="flex items-center gap-3">
@@ -197,7 +202,7 @@ const JobDetailsPage = async ({ params }) => {
                   <span className="text-[11px] text-neutral-500 uppercase tracking-wide">
                     Status Indicator
                   </span>
-                  <span className="text-xs font-bold tracking-widest text-emerald-400 uppercase bg-emerald-950/40 border border-emerald-900/50 px-2 py-0.5 rounded-md w-fit mt-0.5">
+                  <span className="text-xs font-semibold tracking-widest text-emerald-400 uppercase bg-emerald-950/40 border border-emerald-900/50 px-2.5 py-0.5 rounded-md w-fit mt-0.5">
                     {job.status || "Active"}
                   </span>
                 </div>
