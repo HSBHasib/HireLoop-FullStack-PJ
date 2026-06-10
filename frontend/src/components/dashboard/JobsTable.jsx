@@ -33,9 +33,9 @@ const JobsTable = ({ jobs = [] }) => {
     <Table aria-label="Jobs Management Table">
       <Table.ScrollContainer className="h-full overflow-y-auto w-full">
         <Table.Content className="min-w-150">
-          <Table.Header className="sticky top-0 z-10 ">
+          <Table.Header className="sticky top-0 z-10">
             {columns.map((col) => (
-              <Table.Column key={col.id} id={col.id} isRowHeader={col.id === "title"}>
+              <Table.Column key={col.id} id={col.id} isRowHeader={col.id === "title"} className="text-white/70">
                 {col.name}
               </Table.Column>
             ))}
@@ -119,9 +119,5 @@ const JobsTable = ({ jobs = [] }) => {
 };
 
 export default JobsTable;
-
-
-
-
 
 

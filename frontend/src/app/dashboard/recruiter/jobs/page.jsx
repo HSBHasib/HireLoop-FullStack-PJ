@@ -1,9 +1,16 @@
 import JobsTable from '@/components/dashboard/JobsTable';
+import { getLoggedInRecruiterCompany } from '@/lib/api/companies';
 import { getCompanyJobs } from '@/lib/api/jobs'
 import React from 'react'
 
-const RecruiterJobs = async () => {
-  const companyId = "Saboo_19"
+const RecruiterJobs = async () => {  
+  // const company = await getLoggedInRecruiterCompany()
+  // const companyId = company?.recruiterId;
+  // console.log('company manage data - ', company)
+  
+  const company = await getLoggedInRecruiterCompany()
+  const companyId = company._id;
+
   const getCompanyWiseJobDets = await getCompanyJobs(companyId) || [];
   
   return (
