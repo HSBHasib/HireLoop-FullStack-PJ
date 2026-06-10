@@ -8,7 +8,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,10 +26,12 @@ const Navbar = () => {
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
+  const pathName = usePathname();
+
   const menuItems = [
     {
       link: "Browse Jobs",
-      href: "/browsejob",
+      href: "/browse-jobs",
     },
     {
       link: "Company",
@@ -64,12 +66,12 @@ const Navbar = () => {
         {/* Right Side: Desktop All Links */}
         <div className="hidden md:flex gap-6 h-15.5 bg-[#1E1E20]/60 border border-white/5 rounded-2xl px-6">
           {/* Desktop Navigation Links */}
-          <ul className="hidden md:flex items-center gap-6">
+          <ul className="hidden md:flex items-center gap-3">
             {menuItems.map((item, idx) => (
               <li key={idx}>
                 <Link
                   href={item.href}
-                  className="text-sm text-white/85 font-medium hover:text-white"
+                  className={`text-sm text-white/85 font-medium hover:text-white px-3 rounded-2xl hover:border-b hover:border-[#5850EC80] hover:pb-1 transition-all duration-200 ease-in  ${pathName === item.href && "text-white/100 border-b border-[#5850EC] pb-1"}`}
                 >
                   {item.link}
                 </Link>

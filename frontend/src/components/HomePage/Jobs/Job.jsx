@@ -8,7 +8,7 @@ const JobSection = async () => {
   const getSixJobsData = jobs.slice(0, 6);
 
   return (
-    <section className="bg-black text-white px-4 min-h-screen flex flex-col items-center justify-center">
+    <section className="bg-black text-white px-4 flex flex-col items-center justify-center">
       {/* Top Header Label */}
       <div className="flex items-center gap-2 mb-3 text-xs font-semibold tracking-widest uppercase text-[#5850EC]">
         <span>■</span>
