@@ -1,13 +1,13 @@
 import StatCards from "@/components/dashboard/StatCards";
 import { auth } from "@/lib/auth";
+import { getUserSession } from "@/lib/core/session";
 import { headers } from "next/headers";
 import React from "react";
 
 const RecruiterDashboard = async () => {
-  const { data: session } = await auth.api.getSession({
-    headers: await headers(),
-  });
- const recruiterName = session?.name || "Recruiter Name"; 
+  const user = await getUserSession();
+
+  const recruiterName = user?.name || "Recruiter Name";
 
   // console.log("session data - ", session);
   // console.log("Name is  - ", recruiterName);

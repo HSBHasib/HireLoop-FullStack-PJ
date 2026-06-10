@@ -20,7 +20,8 @@ import { PiMagnifyingGlassDuotone } from "react-icons/pi";
 import { LayoutSideContentLeft } from "@gravity-ui/icons";
 
 export default function DashboardSideBar() {
-  const [activeTab, setActiveTab] = useState("Dashboard");
+  // const [activeTab, setActiveTab] = useState("Dashboard");
+  const [activeTab, setActiveTab] = useState("/dashboard/recruiter");
 
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
@@ -94,13 +95,13 @@ export default function DashboardSideBar() {
         {/* 3. Navigation Buttons Loop */}
         <nav className="flex flex-col gap-1.5 flex-1">
           {navItems.map((item) => {
-            const isActive = activeTab === item.label;
+            const isActive = activeTab === item.href;
             return (
               <Link
               key={item.label}
               href={item.href}
                 onClick={() => {
-                  setActiveTab(item.label);
+                  setActiveTab(item.herf);
                 }}
                 className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 group relative ${
                   isActive

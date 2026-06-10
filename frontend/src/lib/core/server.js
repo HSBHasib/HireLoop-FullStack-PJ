@@ -1,5 +1,14 @@
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
+
+// Server Fetch
+export const serverFetch = async (path) => {
+    const res = await fetch(`${baseUrl}${path}`);
+    return res.json();
+}
+
+
+// Server Mutation
 export const serverMutation = async (path, data) => {
     const res = await fetch(`${baseUrl}${path}`, {
         method: "POST",
@@ -11,3 +20,4 @@ export const serverMutation = async (path, data) => {
 
     return res.json()
 }
+

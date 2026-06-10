@@ -6,8 +6,6 @@ const RecruiterJobs = async () => {
   const companyId = "Saboo_19"
   const getCompanyWiseJobDets = await getCompanyJobs(companyId) || [];
   
-  console.log('Company all jobs data - ', getCompanyWiseJobDets);
-
   return (
     <div className="p-5">
       <div className="mb-4 flex justify-between items-center">
