@@ -18,6 +18,10 @@ const JobCard = ({ job }) => {
     companyLogo 
   } = job;
 
+  // Job Id
+  const jobId = job?._id;
+
+
   // SetUp Currency Symbol based on Currency
   const currencySymbol =
     currency === "EUR" ? "€" : currency === "USD" ? "$" : currency;
@@ -99,7 +103,7 @@ const JobCard = ({ job }) => {
         {/* Apply Button */}
         <div className="pt-2">
           <Button variant="ghost" className="rounded-lg flex items-center gap-1.5 text-sm font-medium text-white hover:text-neutral-300 transition-all group">
-            <Link href={`/`}>Apply Now</Link>
+            <Link href={`/jobs/${jobId}`}>Apply Now</Link>
             <HiArrowUpRight className="text-base transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Button>
         </div>

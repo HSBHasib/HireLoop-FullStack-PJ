@@ -8,6 +8,13 @@ export const getAllJobs = async () => {
     return data;
 }
 
+// Get Indivisual Jobs Data By Thier ID
+export const getJobById = async (id) => {
+    const res = await fetch(`${baseUrl}/api/jobs/${id}`);
+    const data = await res.json();
+    return data;
+}
+
 // Get Job Data based on Company
 export const getCompanyJobs = async (companyId) => {
     const res = await fetch(`${baseUrl}/api/jobs?companyId=${companyId}`);

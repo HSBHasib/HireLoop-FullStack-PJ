@@ -117,6 +117,9 @@ const NewJobs = ({ company }) => {
                 <option value="Management" className="bg-[#0A0A0A]">
                   Management
                 </option>
+                <option value="Management" className="bg-[#0A0A0A]">
+                  Healthcare
+                </option>
               </select>
             </TextField>
           </div>
