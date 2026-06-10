@@ -7,45 +7,51 @@ import { LuMapPin, LuCalendar } from "react-icons/lu";
 import { toast } from "react-hot-toast";
 import { newJobsFunc } from "@/lib/actions/newJob";
 import { redirect } from "next/navigation";
-const NewJobs = ({companyId}) => {
+const NewJobs = ({ company }) => {
+  // CompanyData
+  const companyData = {
+    companyId: company?._id,
+    companyLogo: company?.logoUrl,
+    companyName: company?.name,
+  };
 
-const {
-  register,
-  handleSubmit,
-  reset,
-  formState: { errors, isSubmitting },
-} = useForm({
-  defaultValues: {
-    title: "",
-    category: "Technology",
-    type: "Full-time",    
-    minSalary: "",
-    maxSalary: "",
-    currency: "USD",
-    location: "",
-    deadline: "",
-    description: "",
-    responsibilities: "",
-    requirements: "",
-    benefits: "",
-  },
-});
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      title: "",
+      category: "Technology",
+      type: "Full-time",
+      minSalary: "",
+      maxSalary: "",
+      currency: "USD",
+      location: "",
+      deadline: "",
+      description: "",
+      responsibilities: "",
+      requirements: "",
+      benefits: "",
+    },
+  });
 
   const onSubmit = async (data) => {
     const formData = {
       ...data,
-      companyId,
-      status: "active"
-    }
+      ...companyData,
+      status: "active",
+    };
     const res = await newJobsFunc(formData);
-    
-    if(res.insertedId){
+
+    if (res.insertedId) {
       reset();
       toast.success("Job posted successfully!");
     } else {
       toast.error("Something Went Wrong!", {
         duration: 1500,
-      })
+      });
     }
 
     // Redirect to recruiter dashboard route after succeefully form submition.

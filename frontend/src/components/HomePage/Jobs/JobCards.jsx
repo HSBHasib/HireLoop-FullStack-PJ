@@ -6,8 +6,17 @@ import { HiArrowUpRight } from "react-icons/hi2";
 import Link from "next/link";
 
 const JobCard = ({ job }) => {
-  const { title, description, location, type, minSalary, maxSalary, currency } =
-    job;
+  const { 
+    title, 
+    description, 
+    location, 
+    type, 
+    minSalary, 
+    maxSalary, 
+    currency,
+    companyName,
+    companyLogo 
+  } = job;
 
   // SetUp Currency Symbol based on Currency
   const currencySymbol =
@@ -37,15 +46,36 @@ const JobCard = ({ job }) => {
       radius="none"
       shadow="none"
     >
-      <Card.Content className="p-3 flex flex-col justify-between h-full gap-6">
-        {/* Title and Description */}
-        <div className="flex flex-col gap-3">
-          <h3 className="text-2xl font-semibold text-white tracking-tight">
-            {title || "Frontend Developer"}
-          </h3>
-          <p className="text-sm text-neutral-400 font-normal leading-relaxed line-clamp-2 max-w-[90%]">
-            {description}
-          </p>
+      <Card.Content className="p-5 flex flex-col justify-between h-full gap-6">
+        {/* Top Section: Company Info, Title and Description */}
+        <div className="flex flex-col gap-4">
+          {/* Company Logo & Name Header */}
+          <div className="flex items-center gap-3">
+            {companyLogo ? (
+              <img 
+                src={companyLogo} 
+                alt={`${companyName} logo`} 
+                className="w-10 h-10 rounded-xl object-cover bg-neutral-800 border border-neutral-800"
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-xl bg-[#1c1a1e] border border-neutral-800 flex items-center justify-center text-sm font-bold text-[#F7C2FF]">
+                {companyName ? companyName.charAt(0) : "C"}
+              </div>
+            )}
+            <span className="text-sm font-medium text-neutral-400">
+              {companyName || "Anonymous Company"}
+            </span>
+          </div>
+
+          {/* Title and Description */}
+          <div className="flex flex-col gap-2 -mt-1">
+            <h3 className="text-2xl font-semibold text-white tracking-tight">
+              {title || "Frontend Developer"}
+            </h3>
+            <p className="text-sm text-neutral-400 font-normal leading-relaxed line-clamp-2 max-w-[90%]">
+              {description}
+            </p>
+          </div>
         </div>
 
         {/* MidSection: icons and jobs details - salary, location, type */}
@@ -66,7 +96,7 @@ const JobCard = ({ job }) => {
           })}
         </div>
 
-          {/* Apply Button */}
+        {/* Apply Button */}
         <div className="pt-2">
           <Button variant="ghost" className="rounded-lg flex items-center gap-1.5 text-sm font-medium text-white hover:text-neutral-300 transition-all group">
             <Link href={`/`}>Apply Now</Link>
