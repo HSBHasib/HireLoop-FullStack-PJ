@@ -2,7 +2,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 
 // Get All Jobs Data
-export const getAllJobs = async (companyId) => {
+export const getAllJobs = async () => {
     const res = await fetch(`${baseUrl}/api/jobs`);
     const data = await res.json();
     return data;
@@ -14,3 +14,4 @@ export const getCompanyJobs = async (companyId) => {
     const data = await res.json();
     return data;
 }
+

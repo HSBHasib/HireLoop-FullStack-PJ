@@ -67,7 +67,7 @@ const Featured = () => {
   ];
 
   return (
-    <section className=" text-white py-16 px-4 min-h-screen flex flex-col items-center justify-center">
+    <section className=" text-white py-20 px-4 min-h-screen flex flex-col items-center justify-center">
       {/* Top Header Label */}
       <div className="flex items-center gap-2 mb-3 text-xs font-semibold tracking-widest uppercase text-[#5850EC]">
         <span>■</span>
