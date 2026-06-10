@@ -31,7 +31,7 @@ async function run() {
     const companyCollection = db.collection("company");
 
 
-    app.get("/api/jobs", async(req, res) => {
+    app.get("/api/jobs", async (req, res) => {
         const query = req.query;
 
         if(req.query.companyId) {
@@ -48,6 +48,24 @@ async function run() {
         const newJobsData = req.body;
         const result = await newJobsCollection.insertOne(newJobsData);
         
+        res.send(result);
+    })
+
+    // Get Company Data
+    app.get("/api/my/companies", async (req, res) => {
+        const query = req.query;
+
+        if(req.query.recruiterId) {
+            query.recruiterId = req.query.recruiterId;
+        }
+
+        const result = await companyCollection.findOne(query);
+
+        if (!result) {
+            return res.status(404).json({ success: false, message: "Company not found", data: null });
+        }
+        res.send(result);
+
         res.send(result);
     })
 
