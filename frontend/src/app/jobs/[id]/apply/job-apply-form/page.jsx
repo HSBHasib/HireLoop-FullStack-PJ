@@ -42,6 +42,8 @@ const JobApplyForm = ({ job, applicant }) => {
   const onFormSubmit = async (data) => {
     const applicationPayload = { 
       jobId: job?._id,
+      jobTitle: job?.title,
+      applicantId: applicant?.id,
       applicantImage: applicant?.image,
       companyId: job.companyId,
       companyName: job.companyName,

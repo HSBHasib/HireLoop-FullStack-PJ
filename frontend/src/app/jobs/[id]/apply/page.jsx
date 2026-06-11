@@ -6,6 +6,7 @@ import JobApplyForm from "./job-apply-form/page";
 import { HiBuildingOffice2, HiMapPin, HiBriefcase } from "react-icons/hi2";
 import { FaBackspace } from "react-icons/fa";
 import RouterBack from "@/components/reusebaleComponents/Router";
+import { getJobApplicationData } from "@/lib/api/jobApplication";
 
 const JobApplicationPage = async ({ params }) => {
   const { id } = await params;
@@ -13,10 +14,12 @@ const JobApplicationPage = async ({ params }) => {
   // Get User Data
   const user = await getUserSession();
 
+  // If user not logged In
   if (!user) {
     redirect(`/auth/signin?redirect=/jobs/${id}/apply`);
   }
 
+  // If user not job seeker
   const role = user?.role || "userRole";
   if (role !== "job seeker") {
     return (
@@ -33,8 +36,11 @@ const JobApplicationPage = async ({ params }) => {
     );
   }
 
+  
+  // Get Jobs Data
   const job = await getJobById(id);
 
+  // If No Jobs data found
   if (!job) {
     return (
       <div className="bg-[#050505] text-white min-h-screen flex items-center justify-center">
@@ -44,6 +50,10 @@ const JobApplicationPage = async ({ params }) => {
       </div>
     );
   }
+
+  // Check how many jobs user already applied
+  const application = await getJobApplicationData(user.id);
+  console.log('user all application data - ', application);
 
   return (
     <main className="text-neutral-200 min-h-screen py-12 md:pb-20 md: pt-10 px-4 sm:px-6 lg:px-8">
