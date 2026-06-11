@@ -17,8 +17,7 @@ export const getJobById = async (id) => {
 
 // Get Job Data based on Company
 export const getCompanyJobs = async (companyId) => {
-    const res = await fetch(`${baseUrl}/api/jobs?companyId=${companyId}`);
+    const res = await fetch(`${baseUrl}/api/my-company-jobs?companyId=${companyId}`);
     const data = await res.json();
     return data;
 }
-

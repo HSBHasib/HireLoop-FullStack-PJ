@@ -1,7 +1,5 @@
 'use server'
 
-"use server"
-
 import { serverMutation } from "../core/server";
 
 // Pass New Jobs Data in Backend
