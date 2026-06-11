@@ -118,6 +118,23 @@ async function run() {
     })
 
     // Inset Job Application Data on MongoDB
+    app.get("/api/job-applications", async (req, res) => {
+        const query = {};
+
+        if(req.query.applicantId) {
+          query.applicantId = req.query.applicantId;
+        }
+
+        if(req.query.jobId) {
+          query.jobId = req.query.jobId;
+        }
+
+        const cursor = await jobApplicationCollection.find();
+        const result = await cursor.toArray()
+        res.send(result);
+    })
+
+    // Inset Job Application Data on MongoDB
     app.post("/api/job-applications", async (req, res) => {
         const application = req.body;
         
@@ -129,6 +146,7 @@ async function run() {
         const result = await jobApplicationCollection.insertOne(applicationData);
         res.send(result);
     })
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
