@@ -29,11 +29,23 @@ async function run() {
     const db = client.db("hireloopDB");
     const newJobsCollection = db.collection("newJobs");
     const companyCollection = db.collection("company");
+    const userCollection = db.collection("user");
+    const jobApplicationCollection = db.collection("jobApplication");
+
+
+    // Get All User Data
+    app.get("/api/user", async (req, res) => {
+      const user = await userCollection.find();
+      const result = await user.toArray();
+
+      res.send(result);
+    })
 
     // Get All Jobs Data
     app.get("/api/jobs", async (req, res) => {
         const cursor = await newJobsCollection.find();
         const result = await cursor.toArray();
+
         res.send(result);
     })
 
@@ -51,7 +63,6 @@ async function run() {
     // Get Job Data based on Company
     app.get("/api/my-company-jobs", async (req, res) => {
         const query = req.query;
-         console.log('Data check - ', query);
         
         if(req.query.companyId) {
             query.companyId = req.query.companyId;
@@ -59,16 +70,20 @@ async function run() {
 
         const cursor = await newJobsCollection.find(query);
         const result = await cursor.toArray();
-
-        console.log('jobs data - ', result)
+        
         res.send(result);
     })
 
     // Inset New Jobs Data on MongoDB
     app.post("/api/jobs", async (req, res) => {
-        const newJobsData = req.body;
+        const job = req.body;
+
+        const newJobsData = {
+          ...job,
+          createdAt: new Date()
+        }
+
         const result = await newJobsCollection.insertOne(newJobsData);
-        
         res.send(result);
     })
 
@@ -87,14 +102,31 @@ async function run() {
             return res.status(404).json({ success: false, message: "Company not found", data: null });
         }
         res.send(result);
-
     })
 
     // Inset Company Data on MongoDB
     app.post("/api/companies", async (req, res) => {
-        const companyData = req.body;
+        const company = req.body;
+
+        const companyData = {
+          ...company,
+          createdAt: new Date()
+        }
+
         const result = await companyCollection.insertOne(companyData);
+        res.send(result);
+    })
+
+    // Inset Job Application Data on MongoDB
+    app.post("/api/job-applications", async (req, res) => {
+        const application = req.body;
         
+        const applicationData = {
+          ...application,
+          createdAt: new Date()
+        }
+
+        const result = await jobApplicationCollection.insertOne(applicationData);
         res.send(result);
     })
 
