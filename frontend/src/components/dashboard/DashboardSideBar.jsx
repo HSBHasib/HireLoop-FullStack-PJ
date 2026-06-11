@@ -72,7 +72,7 @@ export default function DashboardSideBar() {
               <div className="flex items-center gap-3">
                 {/* Image */}
                 <Avatar>
-                  <Avatar.Image src={user?.image} alt={user?.name} />
+                  <Avatar.Image src={user?.image} alt={user?.name} className="object-cover" />
                   <Avatar.Fallback>{user?.name.charAt[0]}</Avatar.Fallback>
                 </Avatar>
 
