@@ -95,7 +95,7 @@ const Navbar = () => {
             ) : user ? (
               <>
                 <span className="text-white/85">
-                  Hi, {user?.name || "Undefined"}!
+                  Hi, {user?.name || "NameUndefined"}!
                 </span>
                 <Button
                   onClick={handleSignOut}

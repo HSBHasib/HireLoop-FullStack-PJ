@@ -8,11 +8,15 @@ import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SignUpPage = () => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect" || "/auth/signin");
+  const GoogleRedirectTo = searchParams.get("redirect" || "/");
 
   // React Form Hook to handle form
   const {
@@ -56,7 +60,7 @@ const SignUpPage = () => {
           duration: 1500,
         },
       );
-      router.push("/auth/signin");
+      router.push(redirectTo);
     }
   };
 
@@ -65,7 +69,7 @@ const SignUpPage = () => {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: GoogleRedirectTo,
       });
     } catch (error) {
       console.error(
@@ -257,8 +261,7 @@ const SignUpPage = () => {
                     value="job seeker"
                     className="h-4 w-4 bg-zinc-950 border-zinc-800 cursor-pointer accent-[#5850EC]"
                     {...register("role", {
-                      required:
-                        "Please select your role",
+                      required: "Please select your role",
                     })}
                   />
                   <span className="text-sm font-semibold text-white tracking-wide group-hover:text-zinc-200 transition-colors">
@@ -281,8 +284,7 @@ const SignUpPage = () => {
                     value="recruiter"
                     className="h-4 w-4 bg-zinc-950 border-zinc-800 cursor-pointer accent-[#5850EC]"
                     {...register("role", {
-                      required:
-                        "Please select your role",
+                      required: "Please select your role",
                     })}
                   />
                   <span className="text-sm font-semibold text-white tracking-wide group-hover:text-zinc-200 transition-colors">
@@ -330,7 +332,7 @@ const SignUpPage = () => {
         <p className="text-center text-zinc-500 text-sm mt-6">
           Already have an account?{" "}
           <Link
-            href="/auth/signin"
+            href={`${redirectTo}`}
             className="text-[#5850EC] hover:text-[#818CF8] hover:underline font-medium transition-colors"
           >
             Sign In

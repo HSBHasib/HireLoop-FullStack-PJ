@@ -1,5 +1,6 @@
 import { getJobById } from "@/lib/api/jobs";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import {
   HiBriefcase,
@@ -61,7 +62,7 @@ const JobDetailsPage = async ({ params }) => {
   };
 
   return (
-    <main className="bg-black text-white min-h-screen pb-16 pt-10 px-4 md:px-8 lg:px-16 ">
+    <div className="bg-black text-white min-h-screen pb-16 pt-10 px-4 md:px-8 lg:px-16 ">
       <div className="max-w-5xl mx-auto flex flex-col gap-5">
         <div className="w-full bg-[#121212] border border-neutral-900 rounded-[32px] p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-5 shadow-2xl relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-72 h-72 bg-indigo-600/5 blur-[120px] rounded-full pointer-events-none transition-all duration-300 group-hover:bg-indigo-600/10" />
@@ -106,10 +107,10 @@ const JobDetailsPage = async ({ params }) => {
 
           {/* Apply Button */}
           <div className="shrink-0 pt-4 md:pt-0 border-t border-neutral-900 md:border-0 flex flex-col sm:flex-row items-stretch md:items-center gap-4">
-            <button className="h-12 px-8 rounded-xl border-none bg-linear-to-r from-indigo-600 to-indigo-700 hover:from-indigo-50 to-indigo-100 text-white hover:text-black font-semibold text-sm shadow-lg shadow-indigo-600/10 active:scale-[0.98] transition-all duration-300 ease-out flex items-center justify-center gap-2 cursor-pointer border border-transparent hover:border-white hover:font-semibold">
+            <Link href={`/jobs/${id}/apply`} className="h-12 px-8 rounded-xl border-none bg-linear-to-r from-indigo-600 to-indigo-700 hover:from-indigo-50 to-indigo-100 text-white hover:text-black font-semibold text-sm shadow-lg shadow-indigo-600/10 active:scale-[0.98] transition-all duration-300 ease-out flex items-center justify-center gap-2 cursor-pointer border border-transparent hover:border-white hover:font-semibold">
               <span>Apply Now</span>
               <HiArrowUpRight className="text-base transition-transform group-hover:translate-x-0.5" />
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -224,7 +225,7 @@ const JobDetailsPage = async ({ params }) => {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

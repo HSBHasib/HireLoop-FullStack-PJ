@@ -18,10 +18,14 @@ import { FaRegBell } from "react-icons/fa";
 import { PiMagnifyingGlassDuotone } from "react-icons/pi";
 
 import { LayoutSideContentLeft } from "@gravity-ui/icons";
+import { usePathname } from "next/navigation";
 
 export default function DashboardSideBar() {
   // const [activeTab, setActiveTab] = useState("Dashboard");
-  const [activeTab, setActiveTab] = useState("/dashboard/recruiter");
+  const [activeTab, setActiveTab] = useState( "/dashboard/recruiter");
+
+  const pathName = usePathname();
+  console.log('pathName - ', pathName)
 
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
@@ -38,7 +42,7 @@ export default function DashboardSideBar() {
 
   const sideBarContent = (
     <>
-      <div className="flex flex-col h-full bg-[#0A0A0A] p-0.5 lg:p-5 w-full select-none">
+      <div className="flex flex-col h-full bg-[#0A0A0A] p-0.5 lg:p-5 w-full ">
         {/* 1. Company Logo Area */}
         {/* <div className="hidden lg:block mb-6 px-2 items-center gap-2">
           <Link
@@ -95,7 +99,6 @@ export default function DashboardSideBar() {
         {/* 3. Navigation Buttons Loop */}
         <nav className="flex flex-col gap-1.5 flex-1">
           {navItems.map((item) => {
-            const isActive = activeTab === item.href;
             return (
               <Link
               key={item.label}
@@ -104,7 +107,7 @@ export default function DashboardSideBar() {
                   setActiveTab(item.herf);
                 }}
                 className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 group relative ${
-                  isActive
+                  pathName === item.href
                     ? "bg-zinc-900 text-white border-r-2 border-white"
                     : "text-[#7D7F80] hover:bg-zinc-900/40 hover:text-zinc-200"
                 }`}
@@ -112,8 +115,8 @@ export default function DashboardSideBar() {
                 <div className="flex items-center gap-3">
                   <item.icon
                     className={`size-4.5 transition-colors ${
-                      isActive
-                        ? "text-[#5850EC]"
+                      pathName === item.href
+                      ? "text-[#5850EC]"
                         : "text-zinc-500 group-hover:text-zinc-400"
                     }`}
                   />

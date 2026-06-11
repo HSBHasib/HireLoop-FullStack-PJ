@@ -40,7 +40,7 @@ const JobCard = ({ job }) => {
     {
       id: "salary",
       icon: FaCircleDollarToSlot,
-      text: `${currencySymbol}${minSalary || "25"}-${currencySymbol}${maxSalary || "40"}/hour`,
+      text: `${currencySymbol}${minSalary || "25"}-${currencySymbol}${maxSalary || "40"}/month`,
     },
   ];
 

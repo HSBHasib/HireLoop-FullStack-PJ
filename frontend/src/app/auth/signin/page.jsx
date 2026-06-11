@@ -6,13 +6,16 @@ import { Form, Button, TextField, Label } from "@heroui/react";
 import Link from "next/link";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 export default function SignInPage() {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect" || "/");
 
   // React Form Hook to handle form
   const {
@@ -48,7 +51,7 @@ export default function SignInPage() {
       toast.success(`Sign In Successful.`, {
         duration: 1500,
       });
-      router.push("/");
+      router.push(redirectTo);
     }
   };
 
@@ -57,7 +60,7 @@ export default function SignInPage() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: redirectTo,
       });
     } catch (error) {
       console.error(
@@ -184,7 +187,7 @@ export default function SignInPage() {
         <p className="text-center text-zinc-500 text-sm mt-6">
           Don&apos;t have an account?{" "}
           <Link
-            href="/auth/signup"
+            href={`/auth/signup?redirect=${redirectTo}`}
             className="text-[#5850EC] hover:text-[#818CF8] hover:underline font-medium transition-colors"
           >
             Sign Up
