@@ -49,15 +49,18 @@ async function run() {
     })
     
     // Get Job Data based on Company
-    app.get("/api/jobs", async (req, res) => {
+    app.get("/api/my-company-jobs", async (req, res) => {
         const query = req.query;
-
+         console.log('Data check - ', query);
+        
         if(req.query.companyId) {
             query.companyId = req.query.companyId;
         }
 
         const cursor = await newJobsCollection.find(query);
         const result = await cursor.toArray();
+
+        console.log('jobs data - ', result)
         res.send(result);
     })
 
@@ -73,6 +76,7 @@ async function run() {
     app.get("/api/my/companies", async (req, res) => {
         const query = req.query;
 
+        // For Recruiter Base Data
         if(req.query.recruiterId) {
             query.recruiterId = req.query.recruiterId;
         }
