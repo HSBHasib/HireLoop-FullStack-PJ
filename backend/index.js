@@ -31,7 +31,7 @@ async function run() {
     const companyCollection = db.collection("company");
     const userCollection = db.collection("user");
     const jobApplicationCollection = db.collection("jobApplication");
-
+    const seekerPlansCollection = db.collection("seekerPlans");
 
     // Get All User Data
     app.get("/api/user", async (req, res) => {
@@ -39,114 +39,126 @@ async function run() {
       const result = await user.toArray();
 
       res.send(result);
-    })
+    });
 
     // Get All Jobs Data
     app.get("/api/jobs", async (req, res) => {
-        const cursor = await newJobsCollection.find();
-        const result = await cursor.toArray();
+      const cursor = await newJobsCollection.find();
+      const result = await cursor.toArray();
 
-        res.send(result);
-    })
+      res.send(result);
+    });
 
     // Get Indivisual Jobs Data
     app.get("/api/jobs/:id", async (req, res) => {
+      const { id } = req.params;
+      const query = {
+        _id: new ObjectId(id),
+      };
+      const result = await newJobsCollection.findOne(query);
+      res.send(result);
+    });
 
-        const {id} = req.params;
-        const query = {
-          _id: new ObjectId(id)
-        }
-        const result = await newJobsCollection.findOne(query);
-        res.send(result);
-    })
-    
     // Get Job Data based on Company
     app.get("/api/my-company-jobs", async (req, res) => {
-        const query = req.query;
-        
-        if(req.query.companyId) {
-            query.companyId = req.query.companyId;
-        }
+      const query = req.query;
 
-        const cursor = await newJobsCollection.find(query);
-        const result = await cursor.toArray();
-        
-        res.send(result);
-    })
+      if (req.query.companyId) {
+        query.companyId = req.query.companyId;
+      }
+
+      const cursor = await newJobsCollection.find(query);
+      const result = await cursor.toArray();
+
+      res.send(result);
+    });
 
     // Inset New Jobs Data on MongoDB
     app.post("/api/jobs", async (req, res) => {
-        const job = req.body;
+      const job = req.body;
 
-        const newJobsData = {
-          ...job,
-          createdAt: new Date()
-        }
+      const newJobsData = {
+        ...job,
+        createdAt: new Date(),
+      };
 
-        const result = await newJobsCollection.insertOne(newJobsData);
-        res.send(result);
-    })
+      const result = await newJobsCollection.insertOne(newJobsData);
+      res.send(result);
+    });
 
     // Get Company Data
     app.get("/api/my/companies", async (req, res) => {
-        const query = req.query;
+      const query = req.query;
 
-        // For Recruiter Base Data
-        if(req.query.recruiterId) {
-            query.recruiterId = req.query.recruiterId;
-        }
+      // For Recruiter Base Data
+      if (req.query.recruiterId) {
+        query.recruiterId = req.query.recruiterId;
+      }
 
-        const result = await companyCollection.findOne(query);
+      const result = await companyCollection.findOne(query);
 
-        if (!result) {
-            return res.status(404).json({ success: false, message: "Company not found", data: null });
-        }
-        res.send(result);
-    })
+      if (!result) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Company not found", data: null });
+      }
+      res.send(result);
+    });
 
     // Inset Company Data on MongoDB
     app.post("/api/companies", async (req, res) => {
-        const company = req.body;
+      const company = req.body;
 
-        const companyData = {
-          ...company,
-          createdAt: new Date()
-        }
+      const companyData = {
+        ...company,
+        createdAt: new Date(),
+      };
 
-        const result = await companyCollection.insertOne(companyData);
-        res.send(result);
-    })
+      const result = await companyCollection.insertOne(companyData);
+      res.send(result);
+    });
 
     // Inset Job Application Data on MongoDB
     app.get("/api/job-applications", async (req, res) => {
-        const query = {};
+      const query = {};
 
-        if(req.query.applicantId) {
-          query.applicantId = req.query.applicantId;
-        }
+      if (req.query.applicantId) {
+        query.applicantId = req.query.applicantId;
+      }
 
-        if(req.query.jobId) {
-          query.jobId = req.query.jobId;
-        }
+      if (req.query.jobId) {
+        query.jobId = req.query.jobId;
+      }
 
-        const cursor = await jobApplicationCollection.find();
-        const result = await cursor.toArray()
-        res.send(result);
-    })
+      const cursor = await jobApplicationCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     // Inset Job Application Data on MongoDB
     app.post("/api/job-applications", async (req, res) => {
-        const application = req.body;
-        
-        const applicationData = {
-          ...application,
-          createdAt: new Date()
-        }
+      const application = req.body;
 
-        const result = await jobApplicationCollection.insertOne(applicationData);
-        res.send(result);
+      const applicationData = {
+        ...application,
+        createdAt: new Date(),
+      };
+
+      const result = await jobApplicationCollection.insertOne(applicationData);
+      res.send(result);
+    });
+
+    // Get Seeker Plans Data from MongoDB
+    app.get("/api/seeker-plans", async (req, res) => {
+      const query = {};
+
+      if(req.query.plan_id) {
+        query.plan_id = req.query.plan_id;
+      }
+    
+      const result = await seekerPlansCollection.findOne(query);
+      res.send(result);
     })
-
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
