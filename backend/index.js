@@ -26,13 +26,18 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    // Connect to DB
     const db = client.db("hireloopDB");
+
+    // Access to db collections
     const newJobsCollection = db.collection("newJobs");
     const companyCollection = db.collection("company");
     const userCollection = db.collection("user");
     const jobApplicationCollection = db.collection("jobApplication");
     const seekerPlansCollection = db.collection("seekerPlans");
+    const subcriptionCollection = db.collection("subcriptions");
 
+    // ==================== Users ====================
     // Get All User Data
     app.get("/api/user", async (req, res) => {
       const user = await userCollection.find();
@@ -41,6 +46,9 @@ async function run() {
       res.send(result);
     });
 
+
+
+    // ==================== Jobs ====================
     // Get All Jobs Data
     app.get("/api/jobs", async (req, res) => {
       const cursor = await newJobsCollection.find();
@@ -86,6 +94,9 @@ async function run() {
       res.send(result);
     });
 
+
+
+    // ==================== Companies ====================
     // Get Company Data
     app.get("/api/my/companies", async (req, res) => {
       const query = req.query;
@@ -118,6 +129,9 @@ async function run() {
       res.send(result);
     });
 
+
+
+    // ==================== Job Applications ====================
     // Inset Job Application Data on MongoDB
     app.get("/api/job-applications", async (req, res) => {
       const query = {};
@@ -148,6 +162,9 @@ async function run() {
       res.send(result);
     });
 
+
+
+    // ==================== Plans ====================
     // Get Seeker Plans Data from MongoDB
     app.get("/api/seeker-plans", async (req, res) => {
       const query = {};
@@ -157,6 +174,22 @@ async function run() {
       }
     
       const result = await seekerPlansCollection.findOne(query);
+      res.send(result);
+    })
+
+
+
+    // ==================== Subcriptions ====================
+    // Insert Subcription Data on MongoDB
+    app.post("/api/subcriptions", async (req, res) => {
+      const subcription = req.body;
+
+      const subcriptionData = {
+        ...subcription,
+        createdAt: new Date(),
+      }
+
+      const result = await subcriptionCollection.insertOne(subcriptionData);
       res.send(result);
     })
 
@@ -179,3 +212,4 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server Running on port ${port}`);
 });
+
