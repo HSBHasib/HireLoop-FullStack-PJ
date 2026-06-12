@@ -62,7 +62,7 @@ const JobApplicationPage = async ({ params }) => {
 
   const plan = {
     name: "Free",
-    applicationLimit: 5,
+    applicationLimit: 2,
   };
   console.log("user all application data - ", application.length);
 

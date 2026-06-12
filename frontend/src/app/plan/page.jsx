@@ -1,171 +1,185 @@
-import React from "react";
-import { FaCrown, FaBolt, FaChartLine } from "react-icons/fa";
-import { HiArrowRight, HiPlus } from "react-icons/hi2";
+'use client'
+
+import React, { useState } from "react";
+import { FaCrown, FaBolt, FaChartLine, FaBriefcase, FaBuilding } from "react-icons/fa";
+import PricingCard from "@/components/MemberShip/pricingCard/PricingCard";
+import SwitchBtn from "@/components/MemberShip/SwitchBtn";
+import FAQComponet from "@/components/faq/FAQ";
 
 const MemberShipPlan = () => {
-  // MemberShip Plan Data
-  const PLANS_DATA = [
+  const [activeTab, setActiveTab] = useState("seekers");
+  const [openFaq, setOpenFaq] = useState(null); 
+
+  // Tabs structure configuration
+  const TABS_CONFIG = [
+    { id: "seekers", label: "For Job Seekers", icon: FaBriefcase },
+    { id: "recruiters", label: "For Recruiters", icon: FaBuilding },
+  ];
+
+  // Pricing Dets
+  const PRICING_DATA = {
+    seekers: [
+      {
+        id: "seeker-free",
+        name: "Free",
+        price: "0",
+        period: "/forever",
+        icon: FaCrown,
+        iconColor: "text-neutral-400",
+        cardVariant: "default",
+        subtitle: "Essential tools to start your journey:",
+        buttonText: "Free Plan",
+        features: [
+          { text: "Browse & save up to 10 jobs", disabled: false },
+          { text: "Apply to up to 3 jobs per month", disabled: false },
+          { text: "Basic profile setup", disabled: false },
+          { text: "Instant email alerts", disabled: false },
+        ],
+      },
+      {
+        id: "seeker-pro",
+        name: "Pro",
+        price: "19",
+        period: "/month",
+        icon: FaChartLine,
+        iconColor: "text-indigo-400",
+        cardVariant: "tertiary",
+        subtitle: "Accelerate your hiring response:",
+        buttonText: "Upgrade to Pro",
+        features: [
+          { text: "Apply to up to 30 jobs per month", disabled: false, highlightText: true },
+          { text: "Unlimited saved jobs", disabled: false },
+          { text: "Real-time application tracking", disabled: false },
+          { text: "Advanced salary insights", disabled: false },
+        ],
+      },
+      {
+        id: "seeker-premium",
+        name: "Premium",
+        price: "39",
+        period: "/month",
+        icon: FaBolt,
+        iconColor: "text-purple-400",
+        cardVariant: "default",
+        subtitle: "Maximum competitive advantage:",
+        buttonText: "Upgrade to Premium",
+        features: [
+          { text: "Everything in Pro included", disabled: false },
+          { text: "Unlimited job applications", disabled: false },
+          { text: "Profile boost directly to recruiters", disabled: false },
+          { text: "Early access to newly posted jobs", disabled: false },
+          { text: "Priority developer support", disabled: false },
+        ],
+      },
+    ],
+    recruiters: [
+      {
+        id: "recruiter-free",
+        name: "Free",
+        price: "0",
+        period: "/forever",
+        icon: FaCrown,
+        iconColor: "text-neutral-400",
+        cardVariant: "default",
+        subtitle: "Great for your first year of hiring:",
+        buttonText: "Start Free",
+        features: [
+          { text: "Up to 3 active job posts", disabled: false },
+          { text: "Basic applicant management pipeline", disabled: false },
+          { text: "Standard listing visibility tier", disabled: false },
+        ],
+      },
+      {
+        id: "recruiter-growth",
+        name: "Growth",
+        price: "49",
+        period: "/month",
+        icon: FaChartLine,
+        iconColor: "text-indigo-400",
+        cardVariant: "tertiary",
+        subtitle: "Scale your core engineering squads:",
+        buttonText: "Upgrade to Growth",
+        features: [
+          { text: "Up to 10 active job posts", disabled: false, highlightText: true },
+          { text: "Full ATS Applicant tracking systems", disabled: false },
+          { text: "Basic recruitment analytics", disabled: false },
+          { text: "Direct email support desk", disabled: false },
+        ],
+      },
+      {
+        id: "recruiter-enterprise",
+        name: "Enterprise",
+        price: "149",
+        period: "/month",
+        icon: FaBolt,
+        iconColor: "text-purple-400",
+        cardVariant: "default",
+        subtitle: "High-volume corporate infrastructure:",
+        buttonText: "Contact Sales",
+        features: [
+          { text: "Up to 50 active job posts dashboard", disabled: false },
+          { text: "Advanced analytics & custom metrics", disabled: false },
+          { text: "Featured premium job listings", disabled: false },
+          { text: "Team collaboration & seats access", disabled: false },
+          { text: "Custom branding & white-labeled portal", disabled: false },
+          { text: "Priority dedicated success manager", disabled: false },
+        ],
+      },
+    ],
+  };
+
+  const FAQ_DATA = [
     {
-      id: "starter",
-      name: "Starter",
-      price: "0",
-      icon: FaCrown,
-      iconColor: "text-pink-400",
-      isHighlighted: false,
-      subtitle: "Start building your insights hub:",
-      buttonText: "Free Plan",
-      features: [
-        { text: "Daily AI match brief (top 5)", disabled: false },
-        { text: "Verified salary bands", disabled: false },
-        { text: "Company insight dashboards", disabled: false },
-        { text: "1-click apply, unlimited", disabled: true },
-      ],
+      title: "How does plan switching work?",
+      content: "You can upgrade or downgrade your tier plan at any point inside your active dashboard settings. When moving to an escalated tier, system credits are pro-rated instantly.",
     },
     {
-      id: "growth",
-      name: "Growth",
-      price: "17",
-      icon: FaChartLine,
-      iconColor: "text-indigo-400",
-      isHighlighted: true,
-      subtitle: "Start building your insights hub:",
-      buttonText: "Upgrade to Growth",
-      features: [
-        { text: "Daily AI match brief (top 5)", disabled: false },
-        { text: "Verified salary bands", disabled: false },
-        { text: "Company insight dashboards", disabled: false },
-        {
-          text: "1-click apply, unlimited",
-          disabled: false,
-          highlightText: true,
-        },
-      ],
+      title: "What is your cancellation policy?",
+      content: "All subscriptions can be terminated anytime with absolute zero friction. You will retain operational access to your active premium features until the exact calendar date of your next billing interval cycle.",
     },
     {
-      id: "premium",
-      name: "Premium",
-      price: "99",
-      icon: FaBolt,
-      iconColor: "text-purple-400",
-      isHighlighted: false,
-      subtitle: "Start building your insights hub:",
-      buttonText: "Upgrade to Premium",
-      features: [
-        { text: "Everything in Pro", disabled: false },
-        { text: "Multi-profile career portfolios", disabled: false },
-        { text: "Shared talent rooms", disabled: false },
-        { text: "Recruiter view (read-only)", disabled: false },
-      ],
+      title: "Can I request a payment refund?",
+      content: "We provide an explicit 7-day refund guarantee window if our premium pipelines fail to meet your system specifications, provided active usage tracking remains under our evaluation threshold limit.",
+    },
+    {
+      title: "Which global payment methods are accepted?",
+      content: "Our secured infrastructure processes all major credit/debit networks, local digital banking aggregators, and enterprise invoices safely protected under standard SSL tokens.",
     },
   ];
 
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
   return (
-    <div className="bg-[#050505] text-white max-h-screen pb-16 pt-6 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto text-center mb-10">
+    <div className="bg-[#050505] text-white min-h-screen pb-16 pt-10 px-4 sm:px-6 lg:px-8">
+      {/* Header Info */}
+      <div className="max-w-3xl mx-auto text-center mb-8">
         <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-          Select Your Upgrade Path
+          Flexible Upgrades For Everyone
         </h1>
-        <p className="text-xs text-white/50 mt-2 max-w-sm mx-auto leading-relaxed">
-          Unlock absolute freedom with zero submission limits and priority
-          pipelines straight to tech recruiting teams.
+        <p className="text-[12.5px] text-white/50 mt-2 max-w-sm mx-auto leading-relaxed">
+          Bypass traditional limits with streamlined access tailored specifically for tech ecosystem participants.
         </p>
       </div>
 
-      {/* MemberShip Plan Card */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-          {PLANS_DATA.map((planItem) => {
-            const IconComponent = planItem.icon;
+      {/* --- Job Seeker and Recruiter Toggle Button --- */}
+      <SwitchBtn TABS_CONFIG={TABS_CONFIG} activeTab={activeTab} setActiveTab={setActiveTab} />
 
-            return (
-              <div
-                key={planItem.id}
-                className={`rounded-[20px] p-6 flex flex-col justify-between shadow-xl hover:shadow transition-all duration-300 ease-in ${
-                  planItem.isHighlighted
-                    ? "bg-[#111113] hover:border-neutral-700 border border-neutral-800 lg:scale-105 shadow-2xl ring-1 ring-neutral-700/30"
-                    : "bg-[#0b0b0c] border hover:border-neutral-800 border-neutral-900"
-                }`}
-              >
-                <div>
-                  {/* Header Segment */}
-                  <div className="flex justify-between items-center mb-6">
-                    <div className="flex items-center gap-2.5">
-                      <span className="w-8 h-8 bg-neutral-900 border border-neutral-800 rounded-lg flex items-center justify-center text-sm">
-                        <IconComponent className={planItem.iconColor} />
-                      </span>
-                      <span
-                        className={`text-lg font-medium ${planItem.isHighlighted ? "text-white" : "text-neutral-200"}`}
-                      >
-                        {planItem.name}
-                      </span>
-                    </div>
-                    <div className="flex items-baseline text-white">
-                      <span className="text-3xl font-bold">
-                        ${planItem.price}
-                      </span>
-                      <span className="text-neutral-500 text-xs ml-1">
-                        /month
-                      </span>
-                    </div>
-                  </div>
-
-                  <p
-                    className={`text-xs font-medium mb-5 ${planItem.isHighlighted ? "text-neutral-300" : "text-neutral-400"}`}
-                  >
-                    {planItem.subtitle}
-                  </p>
-
-                  {/* Features List Group */}
-                  <ul className="space-y-3.5 mb-8 text-xs">
-                    {planItem.features.map((feature, fIdx) => (
-                      <li
-                        key={fIdx}
-                        className={`flex items-start gap-2.5 leading-relaxed ${
-                          feature.disabled
-                            ? "text-neutral-500"
-                            : feature.highlightText
-                              ? "font-semibold text-indigo-400"
-                              : planItem.isHighlighted
-                                ? "text-neutral-300"
-                                : "text-neutral-400"
-                        }`}
-                      >
-                        {/* Plus Sign Icon Box */}
-                        <span
-                          className={`w-4 h-4 rounded flex items-center justify-center shrink-0 mt-0.5 border ${
-                            feature.disabled
-                              ? "bg-neutral-900 border-neutral-800 text-neutral-600"
-                              : feature.highlightText
-                                ? "bg-indigo-950 border-indigo-800 text-indigo-400"
-                                : planItem.isHighlighted
-                                  ? "bg-neutral-800 border-neutral-700 text-neutral-300"
-                                  : "bg-neutral-900 border-neutral-800 text-neutral-500"
-                          }`}
-                        >
-                          <HiPlus size={10} />
-                        </span>
-                        <span>{feature.text}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Purchase Button */}
-                <button
-                  className={`w-full h-11 rounded-xl text-xs flex items-center justify-between px-4 cursor-pointer  ${
-                    planItem.isHighlighted
-                      ? "bg-white/90 hover:bg-white/80 text-black font-bold"
-                      : "bg-neutral-900 hover:bg-neutral-800 text-neutral-300 font-medium"
-                  }`}
-                >
-                  <span>{planItem.buttonText}</span>
-                  <HiArrowRight size={14} />
-                </button>
-              </div>
-            );
-          })}
+      {/* --- MemberShip Pricing CARD --- */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+        {PRICING_DATA[activeTab].map((planItem) => (
+          <PricingCard key={planItem.id} planItem={planItem} />
+        ))}
       </div>
+
+      {/* --- FAQ Section --- */}
+      <FAQComponet FAQ_DATA={FAQ_DATA} openFaq={openFaq} toggleFaq={toggleFaq} />
+      
     </div>
   );
 };
 
+
 export default MemberShipPlan;
+
