@@ -2,6 +2,7 @@ import React from "react";
 import { redirect } from "next/navigation";
 import { stripe } from "@/lib/stripe";
 import { HiCheck, HiOutlineShieldCheck, HiArrowRight } from "react-icons/hi2";
+import { createSubcription } from "@/lib/actions/subcriptions";
 import Link from "next/link";
 
 const PaymentSuccessfulPage = async ({ searchParams }) => {
@@ -17,19 +18,34 @@ const PaymentSuccessfulPage = async ({ searchParams }) => {
       expand: ["line_items", "payment_intent"],
     });
 
+    // metadata 
+    const metadata = session?.metadata;
+
     if (session.status === "open") {
       return redirect("/plans");
     }
 
     if (session.status === "complete") {
       const customerEmail = session.customer_details?.email || "your email";
-      
       const amountTotal = session.amount_total ? (session.amount_total / 100).toFixed(2) : "20.00";
+      
+      const subsData = {
+        customerMemberShipEmail: customerEmail,
+        customerAccountEmail: metadata?.customerEmail,
+        planId: metadata?.planId,
+        amountTotal,
+      };
+
+      // subcription func to pass subcription data on mongoDB
+      await createSubcription(subsData);
 
       return (
-        <section className="max-h-screen text-white flex items-center justify-center p-4 relative overflow-hidden antialiased">
+        <section className="min-h-screen text-white flex items-center justify-center p-4 relative overflow-hidden antialiased bg-[#050505]">
+          {/* Background Radial Glow Effect */}
+          <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
+
           {/* Core Premium Success Card Container */}
-          <div className="w-full max-w-110 bg-[#1E1E20]/50 border border-neutral-950 rounded-[24px] p-8 flex flex-col items-center text-center shadow-2xl relative z-10 ring-1 ring-neutral-900/40">
+          <div className="w-full max-w-[440px] bg-[#1E1E20]/50 border border-neutral-950 rounded-[24px] p-8 flex flex-col items-center text-center shadow-2xl relative z-10 ring-1 ring-neutral-900/40 backdrop-blur-md">
             
             {/* Glowing Success Checkmark Animated Icon */}
             <div className="w-16 h-16 bg-emerald-950/40 border border-emerald-800/40 rounded-full flex items-center justify-center text-emerald-400 mb-6 relative shadow-[0_0_30px_rgba(16,185,129,0.1)]">
@@ -63,14 +79,14 @@ const PaymentSuccessfulPage = async ({ searchParams }) => {
                 <span className="truncate">Session ID verified</span>
               </div>
               {/* Shortened Session Token View */}
-              <div className="bg-neutral-900 border border-neutral-800 text-neutral-500 font-mono text-[10px] px-2.5 py-1 rounded-md truncate max-w-37.5 select-all">
+              <div className="bg-neutral-900 border border-neutral-800 text-neutral-500 font-mono text-[10px] px-2.5 py-1 rounded-md truncate max-w-[150px] select-all">
                 {sessionId.substring(0, 10)}...{sessionId.substring(sessionId.length - 4)}
               </div>
             </div>
 
             <Link
               href="/" 
-              className="w-full bg-white/90 hover:bg-white/80 text-black h-12 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer shadow-md"
+              className="w-full bg-white text-black h-12 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer shadow-md hover:bg-neutral-200"
             >
               <span>Go to Workspace Dashboard</span>
               <HiArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-200" />

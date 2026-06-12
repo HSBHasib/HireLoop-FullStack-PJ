@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form, Button, TextField, Label } from "@heroui/react";
 import Link from "next/link";
@@ -15,7 +15,7 @@ export default function SignInPage() {
   const router = useRouter();
 
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect" || "/");
+  const redirectTo = searchParams.get("redirect") || "/";
 
   // React Form Hook to handle form
   const {
@@ -197,3 +197,5 @@ export default function SignInPage() {
     </div>
   );
 }
+
+

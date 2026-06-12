@@ -11,7 +11,7 @@ import {
 export const PRICING_DATA = {
   seekers: [
     {
-      id: "seeker-free",
+      id: "seeker_free",
       name: "Free",
       price: "0",
       period: "/forever",
@@ -28,7 +28,7 @@ export const PRICING_DATA = {
       ],
     },
     {
-      id: "seeker-pro",
+      id: "seeker_pro",
       name: "Pro",
       price: "19",
       period: "/month",
@@ -49,7 +49,7 @@ export const PRICING_DATA = {
       ],
     },
     {
-      id: "seeker-premium",
+      id: "seeker_premium",
       name: "Premium",
       price: "39",
       period: "/month",
@@ -69,7 +69,7 @@ export const PRICING_DATA = {
   ],
   recruiters: [
     {
-      id: "recruiter-free",
+      id: "recruiter_free",
       name: "Free",
       price: "0",
       period: "/forever",
@@ -85,7 +85,7 @@ export const PRICING_DATA = {
       ],
     },
     {
-      id: "recruiter-growth",
+      id: "recruiter_growth",
       name: "Growth",
       price: "49",
       period: "/month",
@@ -106,7 +106,7 @@ export const PRICING_DATA = {
       ],
     },
     {
-      id: "recruiter-enterprise",
+      id: "recruiter_enterprise",
       name: "Enterprise",
       price: "149",
       period: "/month",

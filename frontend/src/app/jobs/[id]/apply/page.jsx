@@ -62,17 +62,14 @@ const JobApplicationPage = async ({ params }) => {
   const application = await getJobApplicationDataByApplicantId(user.id);
 
   
-  const plans = await getSeekerPlansById(user.plan || "seeker-free");
-  console.log('userdata ',user)
-  console.log('plan data  ',plans)
-
+  const plans = await getSeekerPlansById(user.plan || "seeker_free");
   const monthlyLimit = plans?.applicationLimitPerMonth;
   const applicationLength = application.length;
 
   return (
     <div className="text-neutral-200 max-h-screen py-8 md:pb-20 md:pt-10 px-4 bg-[#050505]">
       {monthlyLimit <= applicationLength ? (
-        <JobApplicationLimitOutCard plan={plan} application={application} />
+        <JobApplicationLimitOutCard plan={plans} monthlyLimit={monthlyLimit} applicationLength={applicationLength} />
       ) : (
         <div className="max-w-3xl mx-auto flex flex-col gap-8">
           {/* Job Heading */}

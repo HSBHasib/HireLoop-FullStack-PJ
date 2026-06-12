@@ -4,7 +4,7 @@ import {
   HiArrowRight,
 } from "react-icons/hi2";
 
-const JobApplicationLimitOutCard = ({plan, application}) => {
+const JobApplicationLimitOutCard = ({plan, monthlyLimit, applicationLength}) => {
   return (
     <div className="max-w-3xl mx-auto relative">
       {/* Soft Mesh Background Glow */}
@@ -28,9 +28,9 @@ const JobApplicationLimitOutCard = ({plan, application}) => {
           {/* Monospace Fractional Indicator */}
           <div className="text-right shrink-0">
             <div className="text-xl md:text-2xl font-bold text-white leading-none">
-              {application.length}
+              {applicationLength}
               <span className="text-neutral-600">/</span>
-              {plan.applicationLimit}
+              {monthlyLimit}
             </div>
             <div className="text-[9px] md:text-[10px] uppercase tracking-wider text-neutral-500 mt-1 md:mt-2">
               Applications Used
@@ -55,11 +55,11 @@ const JobApplicationLimitOutCard = ({plan, application}) => {
             <div
               className="h-full bg-linear-to-r from-indigo-500 via-purple-500 to-red-500 rounded-full shadow-[0_0_12px_rgba(239,68,68,0.4)] transition-all duration-1000 ease-out relative"
               style={{
-                width: `${Math.min((application.length / plan.applicationLimit) * 100, 100)}%`,
+                width: `${Math.min((applicationLength / monthlyLimit) * 100, 100)}%`,
               }}
             >
               {/* Subtle light bar reflect effect */}
-              <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-b from-white/20 to-transparent" />
             </div>
           </div>
 

@@ -15,8 +15,8 @@ const SignUpPage = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect" || "/auth/signin");
-  const GoogleRedirectTo = searchParams.get("redirect" || "/");
+  const redirectTo = searchParams.get("redirect") || "/auth/signin";
+  const GoogleRedirectTo = searchParams.get("redirect") || "/";
 
   // React Form Hook to handle form
   const {
