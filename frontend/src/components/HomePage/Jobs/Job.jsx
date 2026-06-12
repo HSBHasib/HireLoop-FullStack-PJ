@@ -8,7 +8,7 @@ const JobSection = async () => {
   const getSixJobsData = jobs.slice(0, 6);
 
   return (
-    <section className="bg-black text-white px-4 flex flex-col items-center justify-center">
+    <div className="bg-black text-white px-4 flex flex-col items-center justify-center">
       {/* Top Header Label */}
       <div className="flex items-center gap-2 mb-3 text-xs font-semibold tracking-widest uppercase text-[#5850EC]">
         <span>■</span>
@@ -17,7 +17,7 @@ const JobSection = async () => {
       </div>
 
       {/* Main Heading */}
-      <h2 className="text-3xl md:text-5xl font-semibold text-center max-w-2xl  mb-12">
+      <h2 className="text-3xl md:text-[44px] leading-12 font-semibold text-center max-w-2xl  mb-12">
         The roles you'd never <br /> find by searching
       </h2>
 
@@ -30,7 +30,7 @@ const JobSection = async () => {
           View all job open
         </Link>
       </div>
-    </section>
+    </div>
   );
 };
 

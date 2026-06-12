@@ -76,7 +76,7 @@ const Featured = () => {
       </div>
 
       {/* Main Heading */}
-      <h2 className="text-3xl md:text-5xl font-semibold text-center max-w-2xl  mb-12">
+      <h2 className="text-3xl md:text-[44px] leading-12 font-semibold text-center max-w-2xl  mb-12">
         Everything you need <br /> to succeed
       </h2>
 
