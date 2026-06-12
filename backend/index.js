@@ -180,17 +180,33 @@ async function run() {
 
 
     // ==================== Subcriptions ====================
-    // Insert Subcription Data on MongoDB
+    // Insert Subcription Data on MongoDB and update user 'Plan' data
     app.post("/api/subcriptions", async (req, res) => {
       const subcription = req.body;
 
+      // Subcription Data
       const subcriptionData = {
         ...subcription,
         createdAt: new Date(),
       }
+      const subcriptionResult = await subcriptionCollection.insertOne(subcriptionData);
 
-      const result = await subcriptionCollection.insertOne(subcriptionData);
-      res.send(result);
+
+      // Update job Seeker User Data
+      const filter = { email: subcription.customerAccountEmail }
+      const updateDocument = {
+        $set: {
+          plan: subcription.planId,
+        }
+      }
+      const updatedResult = await userCollection.updateOne(filter, updateDocument);
+
+      const subcriptionDataAndUpdatedUserData = {
+        subcriptionResult,
+        updatedResult
+      }
+
+      res.send(subcriptionDataAndUpdatedUserData);
     })
 
     // Send a ping to confirm a successful connection
