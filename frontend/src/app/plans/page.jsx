@@ -18,6 +18,7 @@ import {
 
 const MemberShipPlan = () => {
   const [activeTab, setActiveTab] = useState("seekers");
+  const [openFaq, setOpenFaq] = useState(null);
 
   // Pricing Data & Tabs structure configuration
   const PricingData = PRICING_DATA;

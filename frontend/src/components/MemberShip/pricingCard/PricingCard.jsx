@@ -73,20 +73,29 @@ const PricingCard = ({ planItem }) => {
           ))}
         </ul>
 
-        <Button
-          radius="xl"
-          className={`w-full h-11 text-xs font-bold transition-all flex items-center justify-between px-4 mt-auto group cursor-pointer ${
-            isTertiary
-              ? "bg-white/90 hover:bg-white/80 text-black"
-              : "bg-neutral-900 hover:bg-neutral-800 text-neutral-300"
-          }`}
-        >
-          <span>{planItem.buttonText}</span>
-          <HiArrowRight
-            size={14}
-            className="group-hover:translate-x-0.5 transition-transform"
-          />
-        </Button>
+          {/* Payment Button */}
+        <div>
+          <form action="/api/checkout_sessions" method="POST">
+            <input type="hidden" name="plan_id" value={planItem.id} />
+            <section>
+              <button
+                className={`rounded-xl w-full h-11 text-xs font-bold transition-all flex items-center justify-between px-4 mt-auto group cursor-pointer ${
+                  isTertiary
+                    ? "bg-white/90 hover:bg-white/80 text-black"
+                    : "bg-neutral-900 hover:bg-neutral-800 text-neutral-300"
+                }`}
+                type="submit"
+                role="link"
+              >
+                <span>{planItem.buttonText}</span>
+                <HiArrowRight
+                  size={14}
+                  className="group-hover:translate-x-0.5 transition-transform"
+                />
+              </button>
+            </section>
+          </form>
+        </div>
       </Card.Content>
     </Card>
   );

@@ -24,6 +24,9 @@ export const auth = betterAuth({
         defaultValue: "job seeker",
         input: true,
       },
+      plan: {
+        defaultValue: "seeker-free"
+      }
     },
   },
 

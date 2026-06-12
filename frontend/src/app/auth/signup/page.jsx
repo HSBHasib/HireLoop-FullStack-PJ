@@ -37,13 +37,17 @@ const SignUpPage = () => {
   const onSubmit = async (data) => {
     const { name, email, password, image, role } = data;
 
+    const plan = role === "job seeker" ? "seeker-free" : "recruiter-free";
+
     const { data: dets, error } = await authClient.signUp.email({
       name,
       email,
       password,
       image,
       role,
+      plan,
     });
+
 
     if (error) {
       // Error tracking handler sequence setup feedback mechanisms

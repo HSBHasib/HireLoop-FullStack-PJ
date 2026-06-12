@@ -81,7 +81,7 @@ const JobApplicationLimitOutCard = ({plan, application}) => {
 
         {/* Premium Clean Action CTA */}
         <Link
-          href="/plan"
+          href="/plans"
           className="w-full h-12 rounded-xl bg-white/90 hover:bg-neutral-200 text-black font-bold text-xs tracking-wide transition-all duration-200 flex items-center justify-between px-4 md:px-5 group shadow-lg cursor-pointer gap-2"
         >
           <span className="truncate">Upgrade System Capacity</span>

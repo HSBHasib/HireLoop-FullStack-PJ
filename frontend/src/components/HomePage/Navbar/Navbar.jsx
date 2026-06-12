@@ -39,7 +39,7 @@ const Navbar = () => {
     },
     {
       link: "Pricing",
-      href: "/pricing",
+      href: "/plans",
     },
   ];
 

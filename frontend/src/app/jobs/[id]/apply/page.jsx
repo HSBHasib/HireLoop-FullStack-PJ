@@ -13,6 +13,7 @@ import RouterBack from "@/components/reusebaleComponents/Router";
 import { getJobApplicationDataByApplicantId } from "@/lib/api/jobApplication";
 import JobApplicationLimitOutCard from "@/components/jobApplication/JobApplicationLimitOutCard";
 import Image from "next/image";
+import { getSeekerPlansById } from "@/lib/api/plans";
 
 
 const JobApplicationPage = async ({ params }) => {
@@ -60,15 +61,17 @@ const JobApplicationPage = async ({ params }) => {
   // Check how many jobs user already applied
   const application = await getJobApplicationDataByApplicantId(user.id);
 
-  const plan = {
-    name: "Free",
-    applicationLimit: 2,
-  };
-  console.log("user all application data - ", application.length);
+  
+  const plans = await getSeekerPlansById(user.plan || "seeker-free");
+  console.log('userdata ',user)
+  console.log('plan data  ',plans)
+
+  const monthlyLimit = plans?.applicationLimitPerMonth;
+  const applicationLength = application.length;
 
   return (
     <div className="text-neutral-200 max-h-screen py-8 md:pb-20 md:pt-10 px-4 bg-[#050505]">
-      {plan.applicationLimit <= application.length ? (
+      {monthlyLimit <= applicationLength ? (
         <JobApplicationLimitOutCard plan={plan} application={application} />
       ) : (
         <div className="max-w-3xl mx-auto flex flex-col gap-8">
@@ -101,8 +104,8 @@ const JobApplicationPage = async ({ params }) => {
                   <div className="inline-flex items-center gap-2 bg-[#FF1F40]/10 border border-[#FF1F40]/30 px-2.5 py-1 rounded-lg text-xs font-bold text-[#FF1F40] shadow-sm tracking-wide self-start sm:self-center">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#FF1F40] animate-pulse" />
                     <span>
-                      Quota Tracks: {application.length} /{" "}
-                      {plan.applicationLimit} Used
+                      Quota Tracks: {applicationLength} /{" "}
+                      {monthlyLimit} Used
                     </span>
                   </div>
                 </div>
