@@ -1,23 +1,17 @@
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
+import { serverFetch } from "../core/server";
 
 // Get All Jobs Data
 export const getAllJobs = async () => {
-    const res = await fetch(`${baseUrl}/api/jobs`);
-    const data = await res.json();
-    return data;
-}
+  return serverFetch("/api/jobs");
+};
 
 // Get Indivisual Jobs Data By Thier ID
 export const getJobById = async (id) => {
-    const res = await fetch(`${baseUrl}/api/jobs/${id}`);
-    const data = await res.json();
-    return data;
-}
+  return serverFetch(`/api/jobs/${id}`);
+};
 
 // Get Job Data based on Company
 export const getCompanyJobs = async (companyId) => {
-    const res = await fetch(`${baseUrl}/api/my-company-jobs?companyId=${companyId}`);
-    const data = await res.json();
-    return data;
-}
+  return serverFetch(`/api/my-company-jobs?companyId=${companyId}`);
+};
+

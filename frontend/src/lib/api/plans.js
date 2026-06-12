@@ -4,3 +4,4 @@ import { serverFetch } from "../core/server";
 export const getSeekerPlansById = async (plan_id) => {
     return serverFetch(`/api/seeker-plans?plan_id=${plan_id}`); 
 }
+
