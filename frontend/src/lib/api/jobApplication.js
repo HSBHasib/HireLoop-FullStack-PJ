@@ -1,6 +1,7 @@
 import { serverFetch } from "../core/server";
 
-// Pass Job Application Data in Backend
-export const getJobApplicationData = async (applicantId) => {
+// Get Job Application Data From MongoDB based on applicantId
+export const getJobApplicationDataByApplicantId = async (applicantId) => {
     return serverFetch(`/api/job-applications?applicantId=${applicantId}`); 
 }
+
