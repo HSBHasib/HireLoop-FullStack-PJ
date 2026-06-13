@@ -16,15 +16,19 @@ import {
 } from "react-icons/fi";
 
 import { createCompanyFunc } from "@/lib/actions/companies";
-import CompanyProfile from "@/components/dashboard/CompanyProfile";
-import CompanyRegisterCard from "@/components/dashboard/CompanyRegisterCard";
+import CompanyProfile from "@/components/dashboard/recruiter/CompanyProfile";
+import CompanyRegisterCard from "@/components/dashboard/recruiter/CompanyRegisterCard";
 import Image from "next/image";
 
 const CompanyProfileDets = ({ recruiter, recruiterCompany }) => {
   // recruiter Id
   const recruiterId = recruiter?.id || "recruiterId Missing";
 
-    // Company Data
+  const [loadingLogo, setLoadingLogo] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalMode, setModalMode] = useState("add");
+
+  // Company Data
   const [company, setCompany] = useState(
     recruiterCompany || {
       registered: false,
@@ -35,13 +39,12 @@ const CompanyProfileDets = ({ recruiter, recruiterCompany }) => {
       employeeCount: "1-10",
       logoUrl: "",
       description: "",
+      // status: company && company.status ? company.status : "Pending",
       status: "Pending",
     },
   );
 
-  const [loadingLogo, setLoadingLogo] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalMode, setModalMode] = useState("add");
+  console.log("company data form company Create page - ", company);
 
   // React Hook Form
   const {
@@ -149,7 +152,7 @@ const CompanyProfileDets = ({ recruiter, recruiterCompany }) => {
     };
 
     try {
-      // Server Action Call
+      // Pass Company Data on MongoDB
       const companyData = await createCompanyFunc(updatedCompany);
 
       if (companyData?.insertedId) {
@@ -204,7 +207,8 @@ const CompanyProfileDets = ({ recruiter, recruiterCompany }) => {
           company={company}
           openFormModal={openFormModal}
           getStatusBadge={getStatusBadge}
-        />)}
+        />
+      )}
 
       {/* Get Company Details */}
       <Modal isOpen={isOpen} onOpenChange={setIsOpen}>

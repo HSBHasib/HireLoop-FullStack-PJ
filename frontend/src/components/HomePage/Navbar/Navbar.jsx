@@ -45,6 +45,7 @@ const Navbar = () => {
 
   // SetUp and add Dashboard Links Based On user Type
   const dashboardLinks = {
+    admin: "/dashboard/admin",
     seeker: "/dashboard/seeker",
     recruiter: "/dashboard/recruiter",
   };

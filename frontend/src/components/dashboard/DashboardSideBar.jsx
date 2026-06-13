@@ -5,7 +5,6 @@ import Image from "next/image";
 import {
   LuLayoutDashboard,
   LuBuilding2,
-  LuBriefcase,
   LuFileSpreadsheet,
   LuSettings,
 } from "react-icons/lu";
@@ -19,14 +18,51 @@ import { Avatar, Button, Drawer, Spinner } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FiUsers } from "react-icons/fi";
+import { HiOutlineBriefcase } from "react-icons/hi2";
+import { MdOutlinePayments } from "react-icons/md";
 
 export default function DashboardSideBar() {
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
-  const role = session?.role || "seeker";
+  const role = user?.role || "seeker";
 
   const [activeTab, setActiveTab] = useState(`/dashboard/${role}`);
   const pathName = usePathname();
+
+  // Admin Dashboard navigation items list
+  const adminNavLinks = [
+    {
+      icon: LuLayoutDashboard,
+      href: "/dashboard/admin",
+      label: "Dashboard",
+    },
+    {
+      icon: FiUsers,
+      href: "/dashboard/admin/users",
+      label: "Users",
+    },
+    {
+      icon: LuBuilding2,
+      href: "/dashboard/admin/companies",
+      label: "Companies",
+    },
+    {
+      icon: HiOutlineBriefcase,
+      href: "/dashboard/admin/jobs",
+      label: "Jobs",
+    },
+    {
+      icon: MdOutlinePayments,
+      href: "/dashboard/admin/payments",
+      label: "Payments",
+    },
+    {
+      icon: LuSettings,
+      href: "/dashboard/admin/settings",
+      label: "Settings",
+    },
+  ];
 
   // Recruiter Dashboard navigation items list
   const recruiterNavLinks = [
@@ -67,7 +103,11 @@ export default function DashboardSideBar() {
       href: "/dashboard/seeker/saved-jobs",
       label: "Saved Jobs",
     },
-    { icon: LuFileSpreadsheet, href: "/dashboard/seeker/applications", label: "Applications" },
+    {
+      icon: LuFileSpreadsheet,
+      href: "/dashboard/seeker/applications",
+      label: "Applications",
+    },
     {
       icon: FaMoneyBills,
       href: "/dashboard/seeker/billing",
@@ -76,15 +116,14 @@ export default function DashboardSideBar() {
     { icon: LuSettings, href: "/", label: "Settings" },
   ];
 
-
   // SetUp recruiter and seeker navLinks an object and then get data on role
   const navLinkMap = {
+    admin: adminNavLinks,
     seeker: seekerNavLinks,
     recruiter: recruiterNavLinks,
   };
-  
-  const navItems = navLinkMap[role];
 
+  const navItems = navLinkMap[role];
 
   const sideBarContent = (
     <>
@@ -141,7 +180,6 @@ export default function DashboardSideBar() {
                     {(user?.role === "seeker"
                       ? `Job ${user?.role}`
                       : user?.role) || `User Name`}
-                    {/* {user?.role || `User Role`} */}
                   </span>
                 </div>
               </div>

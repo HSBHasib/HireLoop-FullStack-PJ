@@ -1,4 +1,4 @@
-import JobsTable from "@/components/dashboard/JobsTable";
+import JobsTable from "@/components/dashboard/recruiter/JobsTable";
 import { getLoggedInRecruiterCompany } from "@/lib/api/companies";
 import { getCompanyJobs } from "@/lib/api/jobs";
 import React from "react";

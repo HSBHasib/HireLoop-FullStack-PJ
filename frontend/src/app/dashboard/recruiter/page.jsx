@@ -1,4 +1,4 @@
-import StatCards from "@/components/dashboard/StatCards";
+import StatCards from "@/components/dashboard/recruiter/StatCards";
 import { auth } from "@/lib/auth";
 import { getUserSession } from "@/lib/core/session";
 import { headers } from "next/headers";
