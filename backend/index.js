@@ -46,8 +46,6 @@ async function run() {
       res.send(result);
     });
 
-
-
     // ==================== Jobs ====================
     // Get All Jobs Data
     app.get("/api/jobs", async (req, res) => {
@@ -94,10 +92,16 @@ async function run() {
       res.send(result);
     });
 
-
-
     // ==================== Companies ====================
-    // Get Company Data
+    // Get All Companies Data
+    app.get("/api/companies", async (req, res) => {
+      const cursor = await companyCollection.find();
+      const result = await cursor.toArray();
+
+      res.send(result);
+    });
+
+    // Get Indivisual Company Data
     app.get("/api/my/companies", async (req, res) => {
       const query = req.query;
 
@@ -129,7 +133,26 @@ async function run() {
       res.send(result);
     });
 
+    // Updated Comapny Data
+    app.patch("/api/company/:id", async (req, res) => {
+      const { id } = req.params;
+      const updatedCompany = req.body;
 
+      console.log('update data - ',updatedCompany)
+
+      // Select the id 
+      const filter = { _id: new ObjectId(id) };
+
+      // updated 
+      const updatedDocument = {
+        $set: {
+          status: updatedCompany.status,
+        },
+      };
+
+      const result = await companyCollection.updateOne(filter, updatedDocument);
+      res.send(result);
+    });
 
     // ==================== Job Applications ====================
     // Inset Job Application Data on MongoDB
@@ -162,22 +185,18 @@ async function run() {
       res.send(result);
     });
 
-
-
     // ==================== Plans ====================
     // Get Seeker Plans Data from MongoDB
     app.get("/api/seeker-plans", async (req, res) => {
       const query = {};
 
-      if(req.query.plan_id) {
+      if (req.query.plan_id) {
         query.plan_id = req.query.plan_id;
       }
-    
+
       const result = await seekerPlansCollection.findOne(query);
       res.send(result);
-    })
-
-
+    });
 
     // ==================== Subcriptions ====================
     // Insert Subcription Data on MongoDB and update user 'Plan' data
@@ -188,26 +207,29 @@ async function run() {
       const subcriptionData = {
         ...subcription,
         createdAt: new Date(),
-      }
-      const subcriptionResult = await subcriptionCollection.insertOne(subcriptionData);
-
+      };
+      const subcriptionResult =
+        await subcriptionCollection.insertOne(subcriptionData);
 
       // Update job Seeker User Data
-      const filter = { email: subcription.customerAccountEmail }
+      const filter = { email: subcription.customerAccountEmail };
       const updateDocument = {
         $set: {
           plan: subcription.planId,
-        }
-      }
-      const updatedResult = await userCollection.updateOne(filter, updateDocument);
+        },
+      };
+      const updatedResult = await userCollection.updateOne(
+        filter,
+        updateDocument,
+      );
 
       const subcriptionDataAndUpdatedUserData = {
         subcriptionResult,
-        updatedResult
-      }
+        updatedResult,
+      };
 
       res.send(subcriptionDataAndUpdatedUserData);
-    })
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -228,4 +250,3 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server Running on port ${port}`);
 });
-
