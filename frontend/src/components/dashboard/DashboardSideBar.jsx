@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-// Pure React Icons pack integration
+import Image from "next/image";
 import {
   LuLayoutDashboard,
   LuBuilding2,
@@ -9,36 +9,82 @@ import {
   LuFileSpreadsheet,
   LuSettings,
 } from "react-icons/lu";
+import { FaMoneyBills } from "react-icons/fa6";
+import { FaRegBell } from "react-icons/fa";
+import { PiMagnifyingGlassDuotone } from "react-icons/pi";
+import { IoBookmarkOutline } from "react-icons/io5";
+import { LayoutSideContentLeft } from "@gravity-ui/icons";
+
 import { Avatar, Button, Drawer, Spinner } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
-import Image from "next/image";
 import Link from "next/link";
-import { FaRegBell } from "react-icons/fa";
-
-import { PiMagnifyingGlassDuotone } from "react-icons/pi";
-
-import { LayoutSideContentLeft } from "@gravity-ui/icons";
 import { usePathname } from "next/navigation";
 
 export default function DashboardSideBar() {
-  // const [activeTab, setActiveTab] = useState("Dashboard");
-  const [activeTab, setActiveTab] = useState( "/dashboard/recruiter");
-
-  const pathName = usePathname();
-  console.log('pathName - ', pathName)
-
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
+  const role = session?.role || "seeker";
 
-  // Recruiter Dashboard core navigation items list
-  const navItems = [
-    { icon: LuLayoutDashboard, href: "/dashboard/recruiter", label: "Dashboard" },
-    { icon: PiMagnifyingGlassDuotone, href: "/dashboard/recruiter/jobs", label: "Manage Jobs" },
-    { icon: FaRegBell, href: "/dashboard/recruiter/jobs/new", label: "Create A Jobs" },
-    { icon: LuBuilding2, href: "/dashboard/recruiter/company", label: "Company Profile" },
+  const [activeTab, setActiveTab] = useState(`/dashboard/${role}`);
+  const pathName = usePathname();
+
+  // Recruiter Dashboard navigation items list
+  const recruiterNavLinks = [
+    {
+      icon: LuLayoutDashboard,
+      href: "/dashboard/recruiter",
+      label: "Dashboard",
+    },
+    {
+      icon: PiMagnifyingGlassDuotone,
+      href: "/dashboard/recruiter/jobs",
+      label: "Manage Jobs",
+    },
+    {
+      icon: FaRegBell,
+      href: "/dashboard/recruiter/jobs/new",
+      label: "Create A Jobs",
+    },
+    {
+      icon: LuBuilding2,
+      href: "/dashboard/recruiter/company",
+      label: "Company Profile",
+    },
     { icon: LuFileSpreadsheet, href: "/", label: "Applications" },
     { icon: LuSettings, href: "/", label: "Settings" },
   ];
+
+  // Seeker Dashboard navigation items list
+  const seekerNavLinks = [
+    { icon: LuLayoutDashboard, href: "/dashboard/seeker", label: "Dashboard" },
+    {
+      icon: PiMagnifyingGlassDuotone,
+      href: "/dashboard/recruiter/jobs",
+      label: "Jobs",
+    },
+    {
+      icon: IoBookmarkOutline,
+      href: "/dashboard/recruiter/jobs/new",
+      label: "Saved Jobs",
+    },
+    { icon: LuFileSpreadsheet, href: "/", label: "Applications" },
+    {
+      icon: FaMoneyBills,
+      href: "/dashboard/recruiter/company",
+      label: "Billing",
+    },
+    { icon: LuSettings, href: "/", label: "Settings" },
+  ];
+
+
+  // SetUp recruiter and seeker navLinks an object and then get data on role
+  const navLinkMap = {
+    seeker: seekerNavLinks,
+    recruiter: recruiterNavLinks,
+  };
+  
+  const navItems = navLinkMap[role];
+
 
   const sideBarContent = (
     <>
@@ -76,19 +122,26 @@ export default function DashboardSideBar() {
               <div className="flex items-center gap-3">
                 {/* Image */}
                 <Avatar>
-                  <Avatar.Image src={user?.image} alt={user?.name} className="object-cover" />
+                  <Avatar.Image
+                    src={user?.image}
+                    alt={user?.name}
+                    className="object-cover"
+                  />
                   <Avatar.Fallback>{user?.name.charAt[0]}</Avatar.Fallback>
                 </Avatar>
 
                 {/* Name */}
                 <div className="flex flex-col">
                   <span className="text-sm font-bold text-zinc-100 tracking-wide">
-                    {user?.name || "Recruiter Name"}
+                    {user?.name || `User Name`}{" "}
                   </span>
 
                   {/* Role */}
                   <span className="text-[11px] text-[#7D7F80] font-medium capitalize">
-                    {user?.role || "Recruiter"}
+                    {(user?.role === "seeker"
+                      ? `Job ${user?.role}`
+                      : user?.role) || `User Name`}
+                    {/* {user?.role || `User Role`} */}
                   </span>
                 </div>
               </div>
@@ -98,11 +151,11 @@ export default function DashboardSideBar() {
 
         {/* 3. Navigation Buttons Loop */}
         <nav className="flex flex-col gap-1.5 flex-1">
-          {navItems.map((item) => {
+          {navItems.map((item, idx) => {
             return (
               <Link
-              key={item.label}
-              href={item.href}
+                key={item.label}
+                href={item.href}
                 onClick={() => {
                   setActiveTab(item.herf);
                 }}
@@ -116,7 +169,7 @@ export default function DashboardSideBar() {
                   <item.icon
                     className={`size-4.5 transition-colors ${
                       pathName === item.href
-                      ? "text-[#5850EC]"
+                        ? "text-[#5850EC]"
                         : "text-zinc-500 group-hover:text-zinc-400"
                     }`}
                   />

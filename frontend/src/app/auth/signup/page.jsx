@@ -29,7 +29,7 @@ const SignUpPage = () => {
       image: "",
       email: "",
       password: "",
-      role: "job seeker",
+      role: "seeker",
     },
   });
 
@@ -37,7 +37,7 @@ const SignUpPage = () => {
   const onSubmit = async (data) => {
     const { name, email, password, image, role } = data;
 
-    const plan = role === "job seeker" ? "seeker-free" : "recruiter-free";
+    const plan = role === "seeker" ? "seeker-free" : "recruiter-free";
 
     const { data: dets, error } = await authClient.signUp.email({
       name,
@@ -262,7 +262,7 @@ const SignUpPage = () => {
                 <div className="flex items-center gap-3 w-full">
                   <input
                     type="radio"
-                    value="job seeker"
+                    value="seeker"
                     className="h-4 w-4 bg-zinc-950 border-zinc-800 cursor-pointer accent-[#5850EC]"
                     {...register("role", {
                       required: "Please select your role",

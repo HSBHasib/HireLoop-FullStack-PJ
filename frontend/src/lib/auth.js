@@ -21,7 +21,7 @@ export const auth = betterAuth({
       role: {
         type: "string",
         required: true,
-        defaultValue: "job seeker",
+        defaultValue: "seeker",
         input: true,
       },
       plan: {

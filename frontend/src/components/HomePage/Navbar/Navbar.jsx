@@ -43,6 +43,19 @@ const Navbar = () => {
     },
   ];
 
+  // SetUp and add Dashboard Links Based On user Type
+  const dashboardLinks = {
+    seeker: "/dashboard/seeker",
+    recruiter: "/dashboard/recruiter",
+  };
+
+  if (user?.email) {
+    menuItems.push({
+      link: "Dashboard",
+      href: dashboardLinks[user?.role || 'seeker']
+    });
+  }
+
   return (
     <div className="sticky top-4 z-40 w-full px-4 h-20">
       <nav className="max-w-7xl mx-auto flex items-center justify-between">

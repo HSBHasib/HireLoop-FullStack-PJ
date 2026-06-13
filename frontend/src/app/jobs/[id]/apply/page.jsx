@@ -29,7 +29,7 @@ const JobApplicationPage = async ({ params }) => {
 
   // If user not job seeker
   const role = user?.role || "userRole";
-  if (role !== "job seeker") {
+  if (role !== "seeker") {
     return (
       <div className="bg-[#050505] text-white min-h-[70vh] flex items-center justify-center p-4">
         <div className="border border-neutral-900 bg-[#0a0a0a] p-8 rounded-2xl max-w-md text-center shadow-xl">
