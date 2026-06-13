@@ -47,6 +47,7 @@ const JobApplyForm = ({ job, applicant }) => {
       applicantImage: applicant?.image,
       companyId: job.companyId,
       companyName: job.companyName,
+      status: "applied",
       ...data,
     };
 

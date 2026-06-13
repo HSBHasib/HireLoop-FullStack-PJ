@@ -49,7 +49,7 @@ const UnauthorizedContent = () => {
           {/* Main Action: Send to their respective dashboard */}
           <Link
             href={`/dashboard/${role}`}
-            className="w-full bg-white/90 hover:bg-white/80 text-black h-12 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer shadow-md"
+            className="w-full bg-white/90 hover:bg-white/80 text-black h-12 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer shadow-md"
           >
             <span>Go to Your Dashboard</span>
           </Link>
@@ -57,7 +57,7 @@ const UnauthorizedContent = () => {
           {/* Secondary Action: Go Back to previous page */}
           <button
             onClick={() => router.back()}
-            className="w-full bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800 text-zinc-300 h-12 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer"
+            className="w-full bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800 text-zinc-300 h-12 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer"
           >
             <HiArrowLeft
               size={14}

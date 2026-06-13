@@ -59,18 +59,18 @@ export default function DashboardSideBar() {
     { icon: LuLayoutDashboard, href: "/dashboard/seeker", label: "Dashboard" },
     {
       icon: PiMagnifyingGlassDuotone,
-      href: "/dashboard/recruiter/jobs",
+      href: "/dashboard/seeker/jobs",
       label: "Jobs",
     },
     {
       icon: IoBookmarkOutline,
-      href: "/dashboard/recruiter/jobs/new",
+      href: "/dashboard/seeker/saved-jobs",
       label: "Saved Jobs",
     },
-    { icon: LuFileSpreadsheet, href: "/", label: "Applications" },
+    { icon: LuFileSpreadsheet, href: "/dashboard/seeker/applications", label: "Applications" },
     {
       icon: FaMoneyBills,
-      href: "/dashboard/recruiter/company",
+      href: "/dashboard/seeker/billing",
       label: "Billing",
     },
     { icon: LuSettings, href: "/", label: "Settings" },
