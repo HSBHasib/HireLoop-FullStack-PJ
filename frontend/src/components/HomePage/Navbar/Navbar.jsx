@@ -2,6 +2,9 @@
 
 import Image from "next/image";
 import { Button, Spinner } from "@heroui/react";
+import {Skeleton} from "@heroui/react";
+
+
 import MobileMenuIcon from "./MobileMenuIcon";
 import MobileResponsiveDropDown from "./MobileResponsiveDropDown";
 import { useState } from "react";
@@ -100,11 +103,12 @@ const Navbar = () => {
 
             {isPending ? (
               <div className=" flex items-center justify-center">
-                <Spinner
+                {/* <Spinner
                   color="purple"
                   label="Fetching session streams..."
                   size="lg"
-                />
+                /> */}
+                <Skeleton className="h-10 w-28 rounded-xl" />
               </div>
             ) : user ? (
               <>

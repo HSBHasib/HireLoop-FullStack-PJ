@@ -4,7 +4,6 @@ import React from 'react'
 
 const AdminCompaniesPageContainer = async () => {
     const companies = await getCompanies() || [];
-    console.log('companies data - ', companies);
     
     return (
       <div className="w-full p-6 bg-[#060607] min-h-screen text-white">

@@ -15,4 +15,3 @@ export const UpdateCompany = async (id, data) => {
     revalidatePath("/dashboard/admin/companies");
     return result;
 }
-

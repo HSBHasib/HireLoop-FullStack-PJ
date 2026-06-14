@@ -1,7 +1,7 @@
 "use client";
 
 import { Chip, Table, Button, Tooltip } from "@heroui/react";
-import { FiEye, FiEdit2, FiTrash2 } from "react-icons/fi"; // React Icons
+import { FiEye, FiEdit2, FiTrash2 } from "react-icons/fi";
 
 // Status Color Map
 const statusColorMap = {

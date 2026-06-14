@@ -39,25 +39,30 @@ const SignUpPage = () => {
 
     const plan = role === "seeker" ? "seeker-free" : "recruiter-free";
 
+    console.log('form data is - ',data);
+    console.log('Plan is - ', plan);
+
     const { data: dets, error } = await authClient.signUp.email({
       name,
       email,
       password,
       image,
-      role,
       plan,
+      role,
     });
-
 
     if (error) {
       // Error tracking handler sequence setup feedback mechanisms
       toast.error(error.message || "Something went wrong.", {
         duration: 2000,
       });
+
+      console.log('error is - ', error);
       return;
     }
 
     if (dets) {
+      console.log('success data is - ', dets)
       toast.success(
         `Welcome ${name}! Your account has been created successfully.`,
         {

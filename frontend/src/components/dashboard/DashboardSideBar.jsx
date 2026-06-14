@@ -14,7 +14,7 @@ import { PiMagnifyingGlassDuotone } from "react-icons/pi";
 import { IoBookmarkOutline } from "react-icons/io5";
 import { LayoutSideContentLeft } from "@gravity-ui/icons";
 
-import { Avatar, Button, Drawer, Spinner } from "@heroui/react";
+import { Avatar, Button, Drawer, Skeleton, Spinner } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -147,12 +147,16 @@ export default function DashboardSideBar() {
 
         {/* 2. Profile Details Component Box */}
         {isPending ? (
-          <div className=" flex items-center justify-center pb-4">
-            <Spinner
-              color="purple"
-              label="Fetching session streams..."
-              size="lg"
-            />
+          <div className="mb-7 px-2 flex flex-col items-start gap-3 border-b border-zinc-900 pb-6">
+            <div className="flex items-center gap-3">
+              {/* Image */}
+              <Skeleton className="flex rounded-full w-10 h-10 shrink-0" />
+
+              <div className="w-full flex flex-col gap-2">
+                <Skeleton className="h-3 w-28 rounded-md" />
+                <Skeleton className="h-2 w-16 rounded-md" />
+              </div>
+            </div>
           </div>
         ) : (
           <>

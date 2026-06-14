@@ -1,4 +1,4 @@
-import { serverFetch } from "../core/server";
+import { protectedFetch, serverFetch } from "../core/server";
 
 // Get All Jobs Data
 export const getAllJobs = async () => {
@@ -12,6 +12,6 @@ export const getJobById = async (id) => {
 
 // Get Job Data based on Company
 export const getCompanyJobs = async (companyId) => {
-  return serverFetch(`/api/my-company-jobs?companyId=${companyId}`);
+  return protectedFetch(`/api/my-company-jobs?companyId=${companyId}`);
 };
 

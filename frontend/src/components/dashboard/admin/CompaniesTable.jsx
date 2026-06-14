@@ -71,8 +71,6 @@ const CompaniesTable = ({ companies = [] }) => {
     rejected: "bg-rose-500 text-rose-400",
   };
 
-  console.log("com - ", companies)
-
   const handleStatusUpdate = async (id, newStatus) => {
       const updateCompanyData = await UpdateCompany(id, {status: newStatus})
 
