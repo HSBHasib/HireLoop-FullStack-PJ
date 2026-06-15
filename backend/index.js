@@ -69,9 +69,7 @@ async function run() {
       if(!user) {
         return res.status(401).send({message: 'unauthorized access'})
       }
-
-      console.log('user is  - ', user)
-
+      
       // Set data in the req object
       req.user = user;
       next();
@@ -80,7 +78,7 @@ async function run() {
     // For Admin
     const verifyAdmin = async (req, res, next) => {
       if(req.user?.role !== 'admin') {
-        return res.status(403).send({message: 'fonbidden access'})
+        return res.status(403).json({message: 'forbidden access'})
       }
       next();
     }
@@ -88,16 +86,14 @@ async function run() {
     // For Seeker
     const verifySeeker = async (req, res, next) => {
       if(req.user?.role !== 'seeker') {
-        return res.status(403).send({message: 'fonbidden access'})
-      }
+return res.status(403).json({message: 'forbidden access'})      }
       next();
     }
 
     // For Recruiter
     const verifyRecruiter = async (req, res, next) => {
       if(req.user?.role !== 'recruiter') {
-        return res.status(403).send({message: 'fonbidden access'})
-      }
+return res.status(403).json({message: 'forbidden access'})      }
       next();
     }
 
@@ -224,7 +220,7 @@ async function run() {
 
 
     // ==================== Job Applications ====================
-    // Inset Job Application Data on MongoDB
+    // Get Job Application Data on MongoDB
     app.get("/api/job-applications", verifyToken, verifySeeker, async (req, res) => {
       const query = {};
 
@@ -241,14 +237,14 @@ async function run() {
         query.jobId = req.query.jobId;
       }
 
-      const cursor = await jobApplicationCollection.find();
+      const cursor = await jobApplicationCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
 
-    // Inset Job Application Data on MongoDB
-    app.post("/api/job-applications", verifyToken, async (req, res) => {
-      const application = req.body;
+    // Inset Job Application Data on MongoDB verifyToken, verifySeeker,
+    app.post("/api/job-applications",  async (req, res) => {
+      const application = req.body; 
 
       const applicationData = {
         ...application,
@@ -271,7 +267,7 @@ async function run() {
       }
 
       const result = await seekerPlansCollection.findOne(query);
-      res.send(result);
+      res.send(result || []);
     });
 
 
