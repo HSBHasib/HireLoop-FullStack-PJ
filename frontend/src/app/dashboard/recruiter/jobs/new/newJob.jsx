@@ -10,8 +10,6 @@ import { redirect } from "next/navigation";
 
 
 const NewJobs = ({ company }) => {
-  console.log('company data on create JOB page - ', company)
-
   // CompanyData
   const companyData = {
     companyId: company?._id,

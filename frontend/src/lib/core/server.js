@@ -17,7 +17,7 @@ export const authHeader = async () => {
 export const serverFetch = async (path) => {
   const res = await fetch(`${baseUrl}${path}`);
   
-  return handleStatusCode(res)
+  return res.json()
 };
 
 // Protected Fetch Data From DB
@@ -37,7 +37,7 @@ export const serverMutation = async (path, data, method = "POST") => {
     method,
     headers: {
       "Content-Type": "application/json",
-      ...(await authHeader()),
+      ...await authHeader(),
     },
     body: JSON.stringify(data),
   });
@@ -55,3 +55,7 @@ const handleStatusCode = (res) => {
 
   return res.json();
 };
+
+
+
+

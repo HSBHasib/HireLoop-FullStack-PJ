@@ -9,6 +9,7 @@ import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
+import { signUpWithRole } from "@/lib/actions/auth.action";
 
 const SignUpPage = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -37,39 +38,27 @@ const SignUpPage = () => {
   const onSubmit = async (data) => {
     const { name, email, password, image, role } = data;
 
-    const plan = role === "seeker" ? "seeker-free" : "recruiter-free";
+    const plan = role === "seeker" ? "seeker_free" : "recruiter_free";
 
-    console.log('form data is - ',data);
-    console.log('Plan is - ', plan);
-
-    const { data: dets, error } = await authClient.signUp.email({
-      name,
-      email,
-      password,
-      image,
-      plan,
-      role,
-    });
-
-    if (error) {
-      // Error tracking handler sequence setup feedback mechanisms
-      toast.error(error.message || "Something went wrong.", {
-        duration: 2000,
+    try {
+      const result = await signUpWithRole({
+        name,
+        email,
+        password,
+        image,
+        role,
+        plan,
       });
-
-      console.log('error is - ', error);
-      return;
-    }
-
-    if (dets) {
-      console.log('success data is - ', dets)
-      toast.success(
-        `Welcome ${name}! Your account has been created successfully.`,
-        {
-          duration: 1500,
-        },
-      );
-      router.push(redirectTo);
+      if (result?.user) {
+        toast.success(
+          `Welcome ${name}! Your account has been created successfully.`,
+          { duration: 1500 },
+        );
+        router.push(redirectTo);
+      }
+    } catch (err) {
+      toast.error(err.message || "Something went wrong.", { duration: 2000 });
+      console.log("error is - ", err);
     }
   };
 

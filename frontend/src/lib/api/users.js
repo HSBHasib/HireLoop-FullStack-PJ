@@ -8,7 +8,6 @@ export const getUserData = async () => {
       sortBy: "createdAt",
       sortDirection: "desc",
     },
-    // This endpoint requires session cookies.
     headers: await headers(),
   });
 

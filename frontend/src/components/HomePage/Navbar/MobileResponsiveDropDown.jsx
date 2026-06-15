@@ -7,7 +7,8 @@ const MobileResponsiveDropDown = ({
   setIsMenuOpen,
   isPending,
   user,
-  handleSignOut
+  handleSignOut,
+  isBanned,
 }) => {
   return (
     <>
@@ -36,10 +37,21 @@ const MobileResponsiveDropDown = ({
             </div>
           ) : user ? (
             <div className="flex flex-col gap-3 pt-2">
+              {isBanned && (
+                <div className="flex items-center justify-center gap-2 -mb-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                  <span className="text-[10px] bg-red-500/10 border border-red-500/30 px-1.5 py-0.5 rounded-md text-red-400 font-semibold uppercase tracking-wider">
+                    Suspended
+                  </span>
+                </div>
+              )}
               <span className="text-white/85 text-center">
                 Hi, {user?.name || "Undefined"}!
               </span>
-              <Button onClick={handleSignOut} className="w-full bg-[#5850EC] text-white font-semibold py-2.5 rounded-xl text-center">
+              <Button
+                onClick={handleSignOut}
+                className="w-full bg-[#5850EC] text-white font-semibold py-2.5 rounded-xl text-center"
+              >
                 SignOut
               </Button>
             </div>
@@ -67,4 +79,3 @@ const MobileResponsiveDropDown = ({
 };
 
 export default MobileResponsiveDropDown;
-

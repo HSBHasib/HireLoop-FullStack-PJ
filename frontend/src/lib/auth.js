@@ -3,8 +3,8 @@ import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { admin } from "better-auth/plugins";
 
-const client = new MongoClient(process.env.MONGODB_URI);
-const db = client.db(process.env.DB_NAME);
+export const client = new MongoClient(process.env.MONGODB_URI);
+export const db = client.db(process.env.DB_NAME);
 
 export const auth = betterAuth({
   emailAndPassword: {
@@ -13,24 +13,23 @@ export const auth = betterAuth({
   },
 
   database: mongodbAdapter(db, {
-    // Optional: if you don't provide a client, database transactions won't be enabled.
     client,
   }),
 
   user: {
     additionalFields: {
-      role: {
-        default: "seeker",
-      },
       plan: {
         default: "seeker-free",
       },
     },
   },
 
-  plugins: [admin()],
+  plugins: [
+    admin({
+      defaultRole: "seeker",
+    }),
+  ],
 
-  // Socail SignIn
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -38,3 +37,5 @@ export const auth = betterAuth({
     },
   },
 });
+
+

@@ -44,7 +44,6 @@ const CompanyProfileDets = ({ recruiter, recruiterCompany }) => {
     },
   );
 
-  console.log("company data form company Create page - ", company);
 
   // React Hook Form
   const {

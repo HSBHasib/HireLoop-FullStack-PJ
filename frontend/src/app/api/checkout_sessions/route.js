@@ -10,8 +10,6 @@ export async function POST(request) {
     const planId = formData.get("plan_id");
     const priceId = PLAN_PRICE_ID[planId];
 
-    console.log('Plan ', priceId)
-
     // User Infos
     const user = await getUserSession();
     const customerEmail = user?.email;

@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import { Button, Spinner } from "@heroui/react";
-import {Skeleton} from "@heroui/react";
-
+import { Skeleton } from "@heroui/react";
 
 import MobileMenuIcon from "./MobileMenuIcon";
 import MobileResponsiveDropDown from "./MobileResponsiveDropDown";
@@ -28,6 +27,7 @@ const Navbar = () => {
   };
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
+  const isBanned = user?.banned;
 
   const pathName = usePathname();
 
@@ -53,10 +53,10 @@ const Navbar = () => {
     recruiter: "/dashboard/recruiter",
   };
 
-  if (user?.email) {
+  if (user?.email && !isBanned) {
     menuItems.push({
       link: "Dashboard",
-      href: dashboardLinks[user?.role || 'seeker']
+      href: dashboardLinks[user?.role || "seeker"],
     });
   }
 
@@ -103,18 +103,25 @@ const Navbar = () => {
 
             {isPending ? (
               <div className=" flex items-center justify-center">
-                {/* <Spinner
-                  color="purple"
-                  label="Fetching session streams..."
-                  size="lg"
-                /> */}
                 <Skeleton className="h-10 w-28 rounded-xl" />
               </div>
             ) : user ? (
               <>
-                <span className="text-white/85">
-                  Hi, {user?.name || "NameUndefined"}!
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-white/85 flex items-center gap-2">
+                    Hi, {user?.name || "NameUndefined"}!
+                    {isBanned && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                    )}
+                  </span>
+                  <div>
+                    {isBanned && (
+                      <span className="text-[10px] bg-red-500/10 border border-red-500/30 px-1.5 py-0.5 rounded-md text-red-400 font-semibold uppercase tracking-wider">
+                        Suspended
+                      </span>
+                    )}
+                  </div>
+                </div>
                 <Button
                   onClick={handleSignOut}
                   className="bg-[#5850EC] hover:bg-[#685FFF] text-white font-semibold text-sm px-6 h-10 rounded-xl transition-all duration-200 active:scale-95 shadow-md"
@@ -145,6 +152,7 @@ const Navbar = () => {
 
       {/* Mobile Responsive Dropdown Menu */}
       <MobileResponsiveDropDown
+        isBanned={isBanned}
         isPending={isPending}
         user={user}
         handleSignOut={handleSignOut}
