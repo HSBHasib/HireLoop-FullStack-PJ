@@ -38,65 +38,66 @@ async function run() {
     const seekerPlansCollection = db.collection("seekerPlans");
     const subcriptionCollection = db.collection("subcriptions");
 
-    // ====================  Varifications  ==================== 
+    // ====================  Varifications  ====================
     const verifyToken = async (req, res, next) => {
       const authHeader = req.headers?.authorization;
 
-      if(!authHeader) {
-        return res.status(401).send({message: 'unauthorized access'})
+      if (!authHeader) {
+        return res.status(401).send({ message: "unauthorized access" });
       }
 
       // Access the token
-      const token = authHeader.split(' ')[1];
+      const token = authHeader.split(" ")[1];
 
-      if(!token) {
-        return res.status(401).send({message: 'unauthorized access'})
+      if (!token) {
+        return res.status(401).send({ message: "unauthorized access" });
       }
 
-      const query = {token: token}
+      const query = { token: token };
       const session = await sessionCollection.findOne(query);
-      if(!session) {
-        return res.status(401).send({message: 'unauthorized access'})
+      if (!session) {
+        return res.status(401).send({ message: "unauthorized access" });
       }
 
       const userId = session.userId;
 
       const userQuery = {
-        _id: userId
+        _id: userId,
+      };
+
+      const user = await userCollection.findOne(userQuery);
+      if (!user) {
+        return res.status(401).send({ message: "unauthorized access" });
       }
 
-      const user = await userCollection.findOne(userQuery)
-      if(!user) {
-        return res.status(401).send({message: 'unauthorized access'})
-      }
-      
       // Set data in the req object
       req.user = user;
       next();
-    }
+    };
 
     // For Admin
     const verifyAdmin = async (req, res, next) => {
-      if(req.user?.role !== 'admin') {
-        return res.status(403).json({message: 'forbidden access'})
+      if (req.user?.role !== "admin") {
+        return res.status(403).json({ message: "forbidden access" });
       }
       next();
-    }
+    };
 
     // For Seeker
     const verifySeeker = async (req, res, next) => {
-      if(req.user?.role !== 'seeker') {
-return res.status(403).json({message: 'forbidden access'})      }
+      if (req.user?.role !== "seeker") {
+        return res.status(403).json({ message: "forbidden access" });
+      }
       next();
-    }
+    };
 
     // For Recruiter
     const verifyRecruiter = async (req, res, next) => {
-      if(req.user?.role !== 'recruiter') {
-return res.status(403).json({message: 'forbidden access'})      }
+      if (req.user?.role !== "recruiter") {
+        return res.status(403).json({ message: "forbidden access" });
+      }
       next();
-    }
-
+    };
 
     // ==================== Users ====================
     // Get All User Data
@@ -107,12 +108,44 @@ return res.status(403).json({message: 'forbidden access'})      }
       res.send(result);
     });
 
-
-
     // ==================== Jobs ====================
     // Get All Jobs Data
     app.get("/api/jobs", async (req, res) => {
-      const cursor = await newJobsCollection.find();
+      const query = {};
+
+      // Job Filter -
+      // based on seaching
+      if(req.query.search) {
+        query.$or = [
+          { title: { $regex: req.query.search, $options: 'i' } },
+          { companyName: { $regex: req.query.search, $options: 'i' } }
+        ]
+      }
+
+      // based on JOB Location
+      if (req.query.location) {
+        const searchLocation = req.query.location.trim();
+
+        if (searchLocation.toLowerCase() === "international") {
+          query.location = { $regex: '^((?!bangladesh|remote).)*$', $options: "i" };
+        } else {
+          query.location = { $regex: searchLocation, $options: "i" };
+        }
+      }
+
+      // based on JOB Type
+      if (req.query.type) {
+        query.type = req.query.type;
+      }
+
+      // based on JOB Category
+      if (req.query.category) {
+        query.category = req.query.category;
+      }
+
+      console.log("query - ", query);
+
+      const cursor = await newJobsCollection.find(query);
       const result = await cursor.toArray();
 
       res.send(result);
@@ -154,8 +187,6 @@ return res.status(403).json({message: 'forbidden access'})      }
       const result = await newJobsCollection.insertOne(newJobsData);
       res.send(result);
     });
-
-
 
     // ==================== Companies ====================
     // Get All Companies Data
@@ -199,52 +230,63 @@ return res.status(403).json({message: 'forbidden access'})      }
     });
 
     // Updated Comapny Data
-    app.patch("/api/company/:id", verifyToken, verifyAdmin, async (req, res) => {
-      const { id } = req.params;
-      const updatedCompany = req.body;
+    app.patch(
+      "/api/company/:id",
+      verifyToken,
+      verifyAdmin,
+      async (req, res) => {
+        const { id } = req.params;
+        const updatedCompany = req.body;
 
-      // Select the id 
-      const filter = { _id: new ObjectId(id) };
+        // Select the id
+        const filter = { _id: new ObjectId(id) };
 
-      // updated 
-      const updatedDocument = {
-        $set: {
-          status: updatedCompany.status,
-        },
-      };
+        // updated
+        const updatedDocument = {
+          $set: {
+            status: updatedCompany.status,
+          },
+        };
 
-      const result = await companyCollection.updateOne(filter, updatedDocument);
-      res.send(result);
-    });
-
-
+        const result = await companyCollection.updateOne(
+          filter,
+          updatedDocument,
+        );
+        res.send(result);
+      },
+    );
 
     // ==================== Job Applications ====================
     // Get Job Application Data on MongoDB
-    app.get("/api/job-applications", verifyToken, verifySeeker, async (req, res) => {
-      const query = {};
+    app.get(
+      "/api/job-applications",
+      verifyToken,
+      verifySeeker,
+      async (req, res) => {
+        const query = {};
 
-      if (req.query.applicantId) {
-        query.applicantId = req.query.applicantId;
+        if (req.query.applicantId) {
+          query.applicantId = req.query.applicantId;
 
-        // Check is that right user or not 
-        if(req.user._id.toString() !== req.query.applicantId) {
-          return res.status(403).send({message: 'forbidden access'})
+          // Check is that right user or not
+          if (req.user._id.toString() !== req.query.applicantId) {
+            return res.status(403).send({ message: "forbidden access" });
+          }
         }
-      }
 
-      if (req.query.jobId) {
-        query.jobId = req.query.jobId;
-      }
+        if (req.query.jobId) {
+          query.jobId = req.query.jobId;
+        }
 
-      const cursor = await jobApplicationCollection.find(query);
-      const result = await cursor.toArray();
-      res.send(result);
-    });
+        const cursor = await jobApplicationCollection.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
+      },
+    );
 
     // Inset Job Application Data on MongoDB verifyToken, verifySeeker,
-    app.post("/api/job-applications",  async (req, res) => {
-      const application = req.body; 
+    app.post("/api/job-applications", async (req, res) => {
+      const application = req.body;
 
       const applicationData = {
         ...application,
@@ -254,8 +296,6 @@ return res.status(403).json({message: 'forbidden access'})      }
       const result = await jobApplicationCollection.insertOne(applicationData);
       res.send(result);
     });
-
-
 
     // ==================== Plans ====================
     // Get Seeker Plans Data from MongoDB
@@ -269,8 +309,6 @@ return res.status(403).json({message: 'forbidden access'})      }
       const result = await seekerPlansCollection.findOne(query);
       res.send(result || []);
     });
-
-
 
     // ==================== Subcriptions ====================
     // Insert Subcription Data on MongoDB and update user 'Plan' data
