@@ -1,8 +1,8 @@
 import { protectedFetch, serverFetch } from "../core/server";
 
 // Get All Jobs Data
-export const getAllJobs = async () => {
-  return serverFetch("/api/jobs");
+export const getAllJobs = async (queryString) => {
+  return serverFetch(`/api/jobs?${queryString}`);
 };
 
 // Get Indivisual Jobs Data By Thier ID
