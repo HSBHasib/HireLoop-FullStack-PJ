@@ -4,7 +4,7 @@ import JobCard from "./JobCards";
 import Link from "next/link";
 
 const JobSection = async () => {
-  const jobs = await getAllJobs();
+  const { jobs } = await getAllJobs();
   const getSixJobsData = jobs.slice(0, 6);
 
   return (

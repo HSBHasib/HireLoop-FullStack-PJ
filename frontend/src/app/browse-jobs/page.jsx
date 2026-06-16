@@ -8,11 +8,11 @@ const BrowseJobContainer = async ({searchParams}) => {
   const querySearch = new URLSearchParams(searchQuery);
   const queryString = querySearch.toString();
 
-  const jobs = await getAllJobs(queryString);
+  const {total, jobs} = await getAllJobs(queryString);
 
   return (
     <div className="w-full">
-      <BrowseJob filters={searchQuery} jobs={jobs || []} />
+      <BrowseJob filters={searchQuery} jobs={jobs || []} total={total} />
     </div>
   );
 };
